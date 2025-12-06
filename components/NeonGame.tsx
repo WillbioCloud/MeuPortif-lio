@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Play, RotateCcw, Trophy, Heart, Zap } from 'lucide-react';
-import { GameState } from '../types';
+import { Play, RotateCcw, Trophy, Heart } from 'lucide-react';
+import { GameState, Language } from '../types';
+import { translations } from '../translations';
 
 interface Entity {
   id: number;
@@ -10,11 +11,16 @@ interface Entity {
   radius: number;
   color: string;
   velocity: { x: number; y: number };
-  lifeTime?: number; // How long it has existed
-  maxLifeTime?: number; // For chasers to explode
+  lifeTime?: number;
+  maxLifeTime?: number;
 }
 
-const NeonGame: React.FC = () => {
+interface NeonGameProps {
+  language: Language;
+}
+
+const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
+  const t = translations[language].game;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const requestRef = useRef<number>(0);
   
@@ -37,7 +43,6 @@ const NeonGame: React.FC = () => {
   const livesRef = useRef(3);
   const frameCountRef = useRef(0);
   const shakeRef = useRef(0); // Screen shake intensity
-  const chaserActiveRef = useRef(false);
   const lastDamageTimeRef = useRef(0); // i-frames
 
   // Configuration
@@ -92,7 +97,6 @@ const NeonGame: React.FC = () => {
         lifeTime: 0,
         maxLifeTime: 400 + Math.random() * 200 // Frames until explosion
       });
-      chaserActiveRef.current = true;
       shakeRef.current = 5; // Initial rumble
     } else if (type === 'powerup') {
       entitiesRef.current.push({
@@ -369,18 +373,14 @@ const NeonGame: React.FC = () => {
     };
   };
 
-  // Sync React State score occasionally to avoid lag, or just use ref for canvas and state for end screen
-  // We used a hybrid approach. State updates only on life change or game over.
-  // Let's add an interval to update the visible score in React if we want a HUD
   useEffect(() => {
      if (!gameState.isPlaying) return;
      const interval = setInterval(() => {
          setGameState(prev => ({ ...prev, score: scoreRef.current }));
-     }, 100); // 10fps update for UI score
+     }, 100); 
      return () => clearInterval(interval);
   }, [gameState.isPlaying]);
 
-  // Handle Resize
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current && canvasRef.current.parentElement) {
@@ -412,7 +412,7 @@ const NeonGame: React.FC = () => {
       <div className="absolute top-4 right-6 z-10 flex flex-col items-end gap-1 pointer-events-none">
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-yellow-500" />
-            <span className="font-mono text-white opacity-80">HI: {gameState.highScore}</span>
+            <span className="font-mono text-white opacity-80">{t.hudHi}: {gameState.highScore}</span>
           </div>
           <div className="text-4xl font-bold font-mono text-white tracking-widest">
             {gameState.score.toString().padStart(5, '0')}
@@ -423,9 +423,6 @@ const NeonGame: React.FC = () => {
         ref={canvasRef}
         className="w-full h-full cursor-none active:cursor-none"
         onMouseMove={handleMouseMove}
-        onMouseLeave={() => {
-             // Auto-pause or game over if mouse leaves? Let's just pause movement
-        }}
       />
 
       {(!gameState.isPlaying) && (
@@ -433,12 +430,12 @@ const NeonGame: React.FC = () => {
           
           {gameState.gameOver && (
             <div className="mb-8 text-center">
-              <h3 className="text-5xl font-bold text-red-500 mb-2 glitch-text">SYSTEM FAILURE</h3>
-              <p className="text-2xl text-white font-mono mb-4">Final Score: {gameState.score}</p>
+              <h3 className="text-5xl font-bold text-red-500 mb-2 glitch-text">{t.gameOverTitle}</h3>
+              <p className="text-2xl text-white font-mono mb-4">{t.gameOverScore}: {gameState.score}</p>
               
               <div className="flex gap-4 justify-center text-sm text-slate-400">
-                  <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-red-500"></div> Dodge Red</div>
-                  <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-neon-green"></div> Get Green</div>
+                  <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-red-500"></div> {t.legendDodge}</div>
+                  <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-neon-green"></div> {t.legendGet}</div>
               </div>
             </div>
           )}
@@ -446,11 +443,11 @@ const NeonGame: React.FC = () => {
           {!gameState.gameOver && (
              <div className="mb-8 text-center max-w-md">
                 <div className="w-20 h-20 bg-neon-blue/20 rounded-full blur-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-                <h2 className="text-3xl font-bold text-white mb-4 relative">READY PILOT?</h2>
+                <h2 className="text-3xl font-bold text-white mb-4 relative">{t.readyTitle}</h2>
                 <div className="space-y-2 text-slate-300 text-sm font-mono bg-slate-800/50 p-6 rounded-lg border border-white/10">
-                    <p className="flex items-center gap-2"><div className="w-2 h-2 bg-neon-blue rounded-full"></div> Move cursor to evade.</p>
-                    <p className="flex items-center gap-2"><div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div> Avoid <span className="text-red-400">Chasers</span> (they explode).</p>
-                    <p className="flex items-center gap-2"><div className="w-2 h-2 bg-neon-green rounded-full"></div> Collect <span className="text-neon-green">Energy</span> for extra life.</p>
+                    <p className="flex items-center gap-2"><div className="w-2 h-2 bg-neon-blue rounded-full"></div> {t.instructionMove}</p>
+                    <p className="flex items-center gap-2"><div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div> {t.instructionAvoid} <span className="text-red-400">{t.entities.chaser}</span></p>
+                    <p className="flex items-center gap-2"><div className="w-2 h-2 bg-neon-green rounded-full"></div> {t.instructionCollect} <span className="text-neon-green">{t.entities.energy}</span></p>
                 </div>
            </div>
           )}
@@ -462,7 +459,7 @@ const NeonGame: React.FC = () => {
             <div className="absolute inset-0 bg-neon-blue/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <span className="relative z-10 flex items-center gap-3">
               {gameState.gameOver ? <RotateCcw size={24} /> : <Play size={24} />}
-              {gameState.gameOver ? 'REBOOT SYSTEM' : 'INITIATE'}
+              {gameState.gameOver ? t.btnRetry : t.btnStart}
             </span>
           </button>
         </div>

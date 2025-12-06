@@ -1,19 +1,26 @@
 import React from 'react';
 import { ExternalLink, Github } from 'lucide-react';
-import { PROJECTS } from '../constants';
+import { translations } from '../translations';
+import { Language } from '../types';
 
-const Projects: React.FC = () => {
+interface ProjectsProps {
+  language: Language;
+}
+
+const Projects: React.FC<ProjectsProps> = ({ language }) => {
+  const content = translations[language].projects;
+
   return (
     <section id="projects" className="py-24 px-4 md:px-8 max-w-7xl mx-auto">
       <div className="mb-16">
         <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-500">
-          Selected Works
+          {content.title}
         </h2>
         <div className="h-1 w-20 bg-neon-blue rounded-full"></div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {PROJECTS.map((project) => (
+        {content.items.map((project) => (
           <div 
             key={project.id}
             className="group relative h-[450px] perspective-1000"
@@ -51,7 +58,7 @@ const Projects: React.FC = () => {
 
                 <div className="flex gap-4 mt-auto">
                    <button className="flex-1 flex items-center justify-center gap-2 py-2 bg-white text-black font-bold text-sm hover:bg-neon-blue transition-colors rounded">
-                      View Case <ExternalLink size={14} />
+                      {content.ctaView} <ExternalLink size={14} />
                    </button>
                    <button className="p-2 border border-slate-600 rounded text-slate-400 hover:text-white hover:border-white transition-colors">
                       <Github size={18} />

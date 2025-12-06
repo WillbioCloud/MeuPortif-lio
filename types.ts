@@ -1,5 +1,7 @@
 import { LucideIcon } from "lucide-react";
 
+export type Language = 'en' | 'pt';
+
 export interface Project {
   id: string;
   title: string;

@@ -3,11 +3,17 @@ import { Menu, X, ArrowRight, Github, Linkedin, Twitter, Mail, Send } from 'luci
 import CustomCursor from './components/CustomCursor';
 import NeonGame from './components/NeonGame';
 import Projects from './components/Projects';
-import { NAV_LINKS, SKILLS, SERVICES } from './constants';
+import { SKILLS } from './constants';
+import { translations } from './translations';
+import { Language } from './types';
 
 const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [language, setLanguage] = useState<Language>('en');
+
+  // Short alias for translations
+  const t = translations[language];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +22,18 @@ const App: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === 'en' ? 'pt' : 'en');
+  };
+
+  const navLinks = [
+    { name: t.nav.home, href: '#home' },
+    { name: t.nav.about, href: '#about' },
+    { name: t.nav.work, href: '#projects' },
+    { name: t.nav.play, href: '#game' },
+    { name: t.nav.contact, href: '#contact' },
+  ];
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-neon-purple selection:text-white overflow-hidden">
@@ -36,7 +54,7 @@ const App: React.FC = () => {
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map(link => (
+            {navLinks.map(link => (
               <a 
                 key={link.name} 
                 href={link.href}
@@ -46,18 +64,36 @@ const App: React.FC = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neon-blue transition-all group-hover:w-full" />
               </a>
             ))}
+            
+            <button 
+              onClick={toggleLanguage}
+              className="px-3 py-1 border border-white/10 rounded text-xs font-mono font-bold hover:bg-white/10 transition-colors flex items-center gap-2"
+            >
+              <span className={language === 'en' ? 'text-neon-blue' : 'text-slate-500'}>EN</span>
+              <span className="w-px h-3 bg-white/20"></span>
+              <span className={language === 'pt' ? 'text-neon-green' : 'text-slate-500'}>PT</span>
+            </button>
+
             <a href="#contact" className="px-5 py-2 border border-white/20 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300">
-              Let's Talk
+              {t.nav.cta}
             </a>
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden text-white"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </button>
+          <div className="flex items-center gap-4 md:hidden">
+            <button 
+              onClick={toggleLanguage}
+              className="px-2 py-1 border border-white/10 rounded text-xs font-mono font-bold"
+            >
+              {language.toUpperCase()}
+            </button>
+            <button 
+              className="text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X /> : <Menu />}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -65,7 +101,7 @@ const App: React.FC = () => {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-30 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center">
           <div className="flex flex-col gap-8 text-center">
-             {NAV_LINKS.map(link => (
+             {navLinks.map(link => (
               <a 
                 key={link.name} 
                 href={link.href}
@@ -83,34 +119,34 @@ const App: React.FC = () => {
       <section id="home" className="relative pt-32 pb-20 px-6 min-h-screen flex flex-col justify-center items-center text-center z-10">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-neon-purple/50 bg-neon-purple/10 text-neon-purple text-sm font-mono animate-float">
-            AVAILABLE FOR FREELANCE WORK
+            {t.hero.badge}
           </div>
           <h1 className="text-5xl md:text-8xl font-bold tracking-tight mb-8 leading-tight">
-            Building digital <br />
+            {t.hero.titleStart} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-neon-purple">
-              experiences
-            </span> that matter.
+              {t.hero.titleHighlight}
+            </span> {t.hero.titleEnd}
           </h1>
           <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            I'm a Full Stack Engineer obsessed with performance, micro-interactions, and creating immersive web applications that leave a mark.
+            {t.hero.subtitle}
           </p>
           
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
              <a href="#projects" className="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden">
                 <div className="absolute inset-0 bg-neon-blue translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                 <span className="relative z-10 group-hover:text-white transition-colors flex items-center gap-2">
-                  View Projects <ArrowRight size={18} />
+                  {t.hero.ctaProject} <ArrowRight size={18} />
                 </span>
              </a>
              <a href="#about" className="px-8 py-4 text-white border border-white/20 rounded-full hover:bg-white/5 transition-colors">
-                About Me
+                {t.hero.ctaAbout}
              </a>
           </div>
         </div>
         
         {/* Scroll Indicator */}
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-          <span className="text-xs font-mono uppercase tracking-widest">Scroll</span>
+          <span className="text-xs font-mono uppercase tracking-widest">{t.hero.scroll}</span>
           <div className="w-px h-12 bg-gradient-to-b from-white to-transparent" />
         </div>
       </section>
@@ -128,22 +164,22 @@ const App: React.FC = () => {
           </div>
           
           <div>
-            <h2 className="text-4xl font-bold mb-6">More than just code.</h2>
+            <h2 className="text-4xl font-bold mb-6">{t.about.title}</h2>
             <p className="text-slate-400 mb-6 text-lg leading-relaxed">
-              With over 5 years of experience in the ever-evolving tech landscape, I bridge the gap between engineering and design. I don't just write clean code; I solve complex problems with creative solutions.
+              {t.about.p1}
             </p>
             <p className="text-slate-400 mb-8 text-lg leading-relaxed">
-              Currently specializing in the React ecosystem (Next.js), Node.js backends, and creative WebGL implementations.
+              {t.about.p2}
             </p>
 
             <div className="grid grid-cols-2 gap-6">
                <div className="p-4 bg-slate-800/50 rounded-lg border border-white/5">
-                  <h3 className="text-3xl font-bold text-neon-blue mb-1">5+</h3>
-                  <p className="text-sm text-slate-500 font-mono">YEARS EXPERIENCE</p>
+                  <h3 className="text-3xl font-bold text-neon-blue mb-1">{t.about.statExp}</h3>
+                  <p className="text-sm text-slate-500 font-mono">{t.about.statExpLabel}</p>
                </div>
                <div className="p-4 bg-slate-800/50 rounded-lg border border-white/5">
-                  <h3 className="text-3xl font-bold text-neon-purple mb-1">50+</h3>
-                  <p className="text-sm text-slate-500 font-mono">PROJECTS SHIPPED</p>
+                  <h3 className="text-3xl font-bold text-neon-purple mb-1">{t.about.statProj}</h3>
+                  <p className="text-sm text-slate-500 font-mono">{t.about.statProjLabel}</p>
                </div>
             </div>
           </div>
@@ -154,8 +190,8 @@ const App: React.FC = () => {
       <section className="py-24 px-6 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-             <h2 className="text-3xl font-bold mb-4">Tech Stack</h2>
-             <p className="text-slate-400">Tools I use to create magic</p>
+             <h2 className="text-3xl font-bold mb-4">{t.skills.title}</h2>
+             <p className="text-slate-400">{t.skills.subtitle}</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
@@ -172,14 +208,14 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      <Projects />
+      <Projects language={language} />
 
       {/* Services */}
       <section className="py-24 px-6 bg-slate-900/30">
         <div className="max-w-7xl mx-auto">
-           <h2 className="text-4xl font-bold mb-12 text-center">Services</h2>
+           <h2 className="text-4xl font-bold mb-12 text-center">{t.services.title}</h2>
            <div className="grid md:grid-cols-3 gap-8">
-              {SERVICES.map((service, idx) => (
+              {t.services.items.map((service, idx) => (
                 <div key={idx} className="p-8 bg-slate-950 rounded-2xl border border-white/5 hover:border-neon-purple/50 transition-colors group">
                    <service.icon className="w-10 h-10 text-neon-purple mb-6 group-hover:text-white transition-colors" />
                    <h3 className="text-xl font-bold mb-4">{service.title}</h3>
@@ -194,11 +230,11 @@ const App: React.FC = () => {
       <section id="game" className="py-24 px-6 bg-gradient-to-b from-slate-950 to-slate-900 relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Take a Break</h2>
-            <p className="text-slate-400">Interact with the portfolio. Survive as long as you can.</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">{t.game.sectionTitle}</h2>
+            <p className="text-slate-400">{t.game.sectionSubtitle}</p>
           </div>
           
-          <NeonGame />
+          <NeonGame language={language} />
           
         </div>
       </section>
@@ -206,26 +242,26 @@ const App: React.FC = () => {
       {/* Contact Section */}
       <section id="contact" className="py-24 px-6 relative">
          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-5xl font-bold mb-8">Ready to start?</h2>
+            <h2 className="text-5xl font-bold mb-8">{t.contact.title}</h2>
             <p className="text-xl text-slate-400 mb-12">
-               I'm currently available for freelance projects and open to full-time opportunities.
+               {t.contact.subtitle}
             </p>
             
             <form className="max-w-md mx-auto space-y-4 text-left" onSubmit={(e) => e.preventDefault()}>
                <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">Name</label>
-                  <input type="text" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder="John Doe" />
+                  <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.nameLabel}</label>
+                  <input type="text" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.namePlaceholder} />
                </div>
                <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">Email</label>
-                  <input type="email" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder="john@example.com" />
+                  <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.emailLabel}</label>
+                  <input type="email" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.emailPlaceholder} />
                </div>
                <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">Message</label>
-                  <textarea rows={4} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder="Tell me about your project..." />
+                  <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.msgLabel}</label>
+                  <textarea rows={4} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.msgPlaceholder} />
                </div>
                <button className="w-full bg-white text-black font-bold py-4 rounded-lg hover:bg-neon-blue transition-colors flex items-center justify-center gap-2">
-                  Send Message <Send size={18} />
+                  {t.contact.btnSend} <Send size={18} />
                </button>
             </form>
          </div>
@@ -246,7 +282,7 @@ const App: React.FC = () => {
             </div>
             
             <div className="text-slate-600 text-sm">
-               © {new Date().getFullYear()} AlexDev. All rights reserved.
+               © {new Date().getFullYear()} AlexDev. {t.footer.rights}
             </div>
          </div>
       </footer>
