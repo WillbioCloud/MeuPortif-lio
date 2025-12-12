@@ -13,5 +13,5 @@ export const SOCIAL_LINKS = {
   github: '#',
   linkedin: '#',
   twitter: '#',
-  email: 'mailto:contact@alex.dev'
+  email: 'mailto:contact@rw.dev'
 };

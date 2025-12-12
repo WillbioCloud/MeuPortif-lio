@@ -56,6 +56,9 @@ interface TranslationData {
     instructionCollect: string;
     btnStart: string;
     btnRetry: string;
+    fullscreen: string;
+    exitFullscreen: string;
+    pressEsc: string;
     entities: {
       chaser: string;
       energy: string;
@@ -171,6 +174,9 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       instructionCollect: 'Collect',
       btnStart: 'INITIATE',
       btnRetry: 'REBOOT SYSTEM',
+      fullscreen: 'Fullscreen',
+      exitFullscreen: 'Exit Fullscreen',
+      pressEsc: 'Press ESC to exit fullscreen',
       entities: {
         chaser: 'Chasers',
         energy: 'Energy'
@@ -284,6 +290,9 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       instructionCollect: 'Colete',
       btnStart: 'INICIAR',
       btnRetry: 'REINICIAR',
+      fullscreen: 'Tela Cheia',
+      exitFullscreen: 'Sair da Tela Cheia',
+      pressEsc: 'Pressione ESC para sair da tela cheia',
       entities: {
         chaser: 'Perseguidores',
         energy: 'Energia'

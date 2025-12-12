@@ -48,8 +48,21 @@ const App: React.FC = () => {
       {/* Navbar */}
       <nav className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? 'py-4 glass-panel border-b border-white/5' : 'py-8 bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <a href="#" className="text-2xl font-bold font-mono tracking-tighter text-white">
-            ALEX<span className="text-neon-blue">.DEV</span>
+          
+          {/* Logo Section */}
+          <a href="#" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="absolute inset-0 bg-neon-blue/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* Note: 'brightness-0 invert' makes a black logo white. Remove if logo is already colored/white */}
+              <img 
+                src="/logo.png" 
+                alt="RW.Dev Logo" 
+                className="h-10 w-auto relative z-10 object-contain brightness-0 invert transition-transform duration-300 group-hover:scale-105" 
+              />
+            </div>
+            <span className="text-2xl font-bold font-mono tracking-tighter text-white">
+              RW<span className="text-neon-blue">.DEV</span>
+            </span>
           </a>
 
           {/* Desktop Nav */}
@@ -270,8 +283,16 @@ const App: React.FC = () => {
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-white/5 bg-slate-950">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-2xl font-bold font-mono tracking-tighter">
-              ALEX<span className="text-slate-600">.DEV</span>
+            
+            <div className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
+               <img 
+                 src="/logo.png" 
+                 alt="RW.Dev" 
+                 className="h-8 w-auto brightness-0 invert" 
+               />
+               <div className="text-xl font-bold font-mono tracking-tighter">
+                 RW<span className="text-slate-600">.DEV</span>
+               </div>
             </div>
             
             <div className="flex gap-6">
@@ -282,7 +303,7 @@ const App: React.FC = () => {
             </div>
             
             <div className="text-slate-600 text-sm">
-               © {new Date().getFullYear()} AlexDev. {t.footer.rights}
+               © {new Date().getFullYear()} RW.Dev. {t.footer.rights}
             </div>
          </div>
       </footer>

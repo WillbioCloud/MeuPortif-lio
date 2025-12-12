@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Play, RotateCcw, Trophy, Heart } from 'lucide-react';
+import { Play, RotateCcw, Trophy, Heart, Maximize, Minimize } from 'lucide-react';
 import { GameState, Language } from '../types';
 import { translations } from '../translations';
 
@@ -22,6 +22,7 @@ interface NeonGameProps {
 const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
   const t = translations[language].game;
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
   
   // Game State
@@ -32,6 +33,9 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
     gameOver: false,
     lives: 3
   });
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   // Refs for game loop (Mutable state for performance)
   const playerRef = useRef({ x: 0, y: 0, radius: 10, color: '#00f3ff', velocity: {x:0, y:0} });
@@ -55,6 +59,51 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
       setGameState(prev => ({ ...prev, highScore: parseInt(savedScore) }));
     }
   }, []);
+
+  const toggleFullscreen = async () => {
+    if (!containerRef.current) return;
+
+    if (!document.fullscreenElement) {
+      try {
+        await containerRef.current.requestFullscreen();
+        // Toast logic handled in useEffect for state accuracy, but trigger immediately for feedback
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      } catch (err) {
+        console.error("Error attempting to enable fullscreen:", err);
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  const handleResize = useCallback(() => {
+    if (canvasRef.current && canvasRef.current.parentElement) {
+      canvasRef.current.width = canvasRef.current.parentElement.offsetWidth;
+      canvasRef.current.height = canvasRef.current.parentElement.offsetHeight;
+    }
+  }, []);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+      // Slight delay to allow DOM to settle
+      setTimeout(handleResize, 100);
+    };
+
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    window.addEventListener('resize', handleResize);
+    
+    // Initial size
+    handleResize();
+
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullscreenChange);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [handleResize]);
 
   const createExplosion = (x: number, y: number, color: string, count: number = 8) => {
     for (let i = 0; i < count; i++) {
@@ -381,20 +430,29 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
      return () => clearInterval(interval);
   }, [gameState.isPlaying]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (canvasRef.current && canvasRef.current.parentElement) {
-        canvasRef.current.width = canvasRef.current.parentElement.offsetWidth;
-        canvasRef.current.height = canvasRef.current.parentElement.offsetHeight;
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
-    <div id="game" className="relative w-full h-[600px] bg-slate-900 overflow-hidden rounded-xl border border-slate-800 shadow-2xl my-20 group select-none">
+    <div 
+      ref={containerRef}
+      id="game" 
+      className={`relative w-full bg-slate-900 overflow-hidden border border-slate-800 shadow-2xl my-20 group select-none transition-all duration-300 ${isFullscreen ? 'fixed inset-0 z-50 rounded-none border-0' : 'h-[600px] rounded-xl'}`}
+    >
+       {/* Fullscreen Toast Notification */}
+       <div 
+          className={`absolute top-8 left-1/2 -translate-x-1/2 bg-slate-900/90 border border-neon-blue/50 text-neon-blue px-6 py-2 rounded-full text-sm font-mono pointer-events-none z-50 transition-all duration-500 flex items-center gap-2 backdrop-blur-md ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'}`}
+        >
+          <div className="w-2 h-2 rounded-full bg-neon-blue animate-pulse" />
+          {t.pressEsc}
+       </div>
+
+       {/* Fullscreen Toggle Button */}
+       <button 
+          onClick={toggleFullscreen}
+          className="absolute top-4 right-4 z-30 p-2 bg-slate-800/50 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white transition-colors cursor-pointer backdrop-blur-sm border border-white/5"
+          title={isFullscreen ? t.exitFullscreen : t.fullscreen}
+       >
+          {isFullscreen ? <Minimize size={20} /> : <Maximize size={20} />}
+       </button>
+
        {/* UI HUD */}
        <div className="absolute top-4 left-6 z-10 pointer-events-none flex flex-col gap-2">
             <h2 className="text-2xl font-bold font-mono text-neon-blue drop-shadow-[0_0_10px_rgba(0,243,255,0.5)]">NEON EVASION V2</h2>
@@ -409,7 +467,7 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
             </div>
        </div>
 
-      <div className="absolute top-4 right-6 z-10 flex flex-col items-end gap-1 pointer-events-none">
+      <div className="absolute top-4 right-16 z-10 flex flex-col items-end gap-1 pointer-events-none pr-4">
           <div className="flex items-center gap-2">
             <Trophy className="w-4 h-4 text-yellow-500" />
             <span className="font-mono text-white opacity-80">{t.hudHi}: {gameState.highScore}</span>
@@ -441,7 +499,7 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
           )}
 
           {!gameState.gameOver && (
-             <div className="mb-8 text-center max-w-md">
+             <div className="mb-8 text-center max-w-md px-6">
                 <div className="w-20 h-20 bg-neon-blue/20 rounded-full blur-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                 <h2 className="text-3xl font-bold text-white mb-4 relative">{t.readyTitle}</h2>
                 <div className="space-y-2 text-slate-300 text-sm font-mono bg-slate-800/50 p-6 rounded-lg border border-white/10">
