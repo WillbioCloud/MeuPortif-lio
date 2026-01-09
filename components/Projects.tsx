@@ -1,5 +1,5 @@
 import React from 'react';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, PlayCircle } from 'lucide-react';
 import { translations } from '../translations';
 import { Language } from '../types';
 
@@ -37,6 +37,15 @@ const Projects: React.FC<ProjectsProps> = ({ language }) => {
                   alt={project.title}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                 />
+                
+                {/* Se for o App (sem link real), mostra icone de vídeo no hover para sugerir demo */}
+                {!project.link && (
+                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
+                      <div className="bg-black/50 p-3 rounded-full backdrop-blur-sm border border-white/20">
+                        <PlayCircle size={32} className="text-white" />
+                      </div>
+                   </div>
+                )}
               </div>
 
               {/* Content */}
@@ -57,9 +66,21 @@ const Projects: React.FC<ProjectsProps> = ({ language }) => {
                 </div>
 
                 <div className="flex gap-4 mt-auto">
-                   <button className="flex-1 flex items-center justify-center gap-2 py-2 bg-white text-black font-bold text-sm hover:bg-neon-blue transition-colors rounded">
-                      {content.ctaView} <ExternalLink size={14} />
-                   </button>
+                   {project.link ? (
+                     <a 
+                       href={project.link} 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       className="flex-1 flex items-center justify-center gap-2 py-2 bg-white text-black font-bold text-sm hover:bg-neon-blue transition-colors rounded cursor-pointer"
+                     >
+                        {content.ctaView} <ExternalLink size={14} />
+                     </a>
+                   ) : (
+                     <button className="flex-1 flex items-center justify-center gap-2 py-2 bg-slate-800 text-slate-300 font-bold text-sm cursor-not-allowed border border-slate-700" disabled>
+                        Em Breve <PlayCircle size={14} />
+                     </button>
+                   )}
+                   
                    <button className="p-2 border border-slate-600 rounded text-slate-400 hover:text-white hover:border-white transition-colors">
                       <Github size={18} />
                    </button>

@@ -5,20 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RW.Dev | Full Stack Creator</title>
     
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://aistudiocdn.com/react@^19.2.1",
-        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-        "react/": "https://aistudiocdn.com/react@^19.2.1/",
-        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0"
-      }
-    }
-    </script>
-
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.54/build/spline-viewer.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -57,7 +47,6 @@
       body {
         background-color: #050507;
         color: #ffffff;
-        /* cursor: none; <-- REMOVIDO: Controlado via classe React agora */
         overflow-x: hidden;
       }
       
@@ -88,13 +77,14 @@
         border: 1px solid rgba(255, 255, 255, 0.05);
       }
       
-      /* Classe utilitária para esconder cursor via React */
       .cursor-none {
         cursor: none;
       }
     </style>
-</head>
+  </head>
   <body>
     <div id="root"></div>
+    
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

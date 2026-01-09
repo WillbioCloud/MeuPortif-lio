@@ -5,6 +5,7 @@ import NeonGame from './components/NeonGame';
 import Projects from './components/Projects';
 import Hero from './components/Hero';
 import About from './components/About';
+import Reveal from './components/Reveal'; // Importe o Reveal
 import { SKILLS } from './constants';
 import { translations } from './translations';
 import { Language } from './types';
@@ -15,7 +16,6 @@ const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('en');
   const [isTouch, setIsTouch] = useState(false);
 
-  // Short alias for translations
   const t = translations[language];
 
   useEffect(() => {
@@ -23,10 +23,7 @@ const App: React.FC = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
-    
-    // Detect touch device to disable custom cursor logic if needed
     setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -43,7 +40,6 @@ const App: React.FC = () => {
   ];
 
   return (
-    // Adiciona classe 'cursor-none' apenas se NÃO for dispositivo touch
     <div className={`min-h-screen bg-slate-950 text-slate-200 selection:bg-neon-purple selection:text-white overflow-hidden ${!isTouch ? 'cursor-none' : ''}`}>
       <CustomCursor />
 
@@ -57,7 +53,6 @@ const App: React.FC = () => {
       <nav className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? 'py-4 glass-panel border-b border-white/5' : 'py-8 bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           
-          {/* Logo Section */}
           <a href="#" className="flex items-center gap-3 group">
             <div className="relative">
               <div className="absolute inset-0 bg-neon-blue/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -72,7 +67,6 @@ const App: React.FC = () => {
             </span>
           </a>
 
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map(link => (
               <a 
@@ -99,7 +93,6 @@ const App: React.FC = () => {
             </a>
           </div>
 
-          {/* Mobile Menu Toggle */}
           <div className="flex items-center gap-4 md:hidden">
             <button 
               onClick={toggleLanguage}
@@ -117,7 +110,6 @@ const App: React.FC = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-30 bg-slate-950/95 backdrop-blur-xl flex items-center justify-center">
           <div className="flex flex-col gap-8 text-center">
@@ -135,105 +127,117 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Hero Component */}
+      {/* Hero (com Spline Iframe) */}
       <Hero language={language} />
 
-      {/* About Component */}
-      <About language={language} />
+      {/* About */}
+      <Reveal>
+        <About language={language} />
+      </Reveal>
 
       {/* Skills */}
       <section className="py-24 px-6 z-10 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-             <h2 className="text-3xl font-bold mb-4">{t.skills.title}</h2>
-             <p className="text-slate-400">{t.skills.subtitle}</p>
-          </div>
+          <Reveal>
+            <div className="text-center mb-16">
+               <h2 className="text-3xl font-bold mb-4">{t.skills.title}</h2>
+               <p className="text-slate-400">{t.skills.subtitle}</p>
+            </div>
+          </Reveal>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {SKILLS.map(skill => (
-              <div key={skill.name} className="p-6 bg-slate-900 rounded-xl border border-white/5 hover:border-neon-green/50 hover:bg-slate-800 transition-all group flex flex-col items-center gap-3 text-center">
-                 <span className="text-4xl group-hover:scale-110 transition-transform duration-300">{skill.icon}</span>
-                 <span className="font-medium text-sm text-slate-300">{skill.name}</span>
-                 <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden mt-2">
-                    <div className="h-full bg-neon-green" style={{ width: `${skill.level}%` }} />
-                 </div>
-              </div>
-            ))}
-          </div>
+          <Reveal delay={200}>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {SKILLS.map((skill, index) => (
+                <div key={skill.name} className="p-6 bg-slate-900 rounded-xl border border-white/5 hover:border-neon-green/50 hover:bg-slate-800 transition-all group flex flex-col items-center gap-3 text-center">
+                   <span className="text-4xl group-hover:scale-110 transition-transform duration-300">{skill.icon}</span>
+                   <span className="font-medium text-sm text-slate-300">{skill.name}</span>
+                   <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden mt-2">
+                      <div className="h-full bg-neon-green" style={{ width: `${skill.level}%` }} />
+                   </div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Projects Component */}
-      <Projects language={language} />
+      {/* Projects */}
+      <Reveal>
+        <Projects language={language} />
+      </Reveal>
 
       {/* Services */}
       <section className="py-24 px-6 bg-slate-900/30">
         <div className="max-w-7xl mx-auto">
-           <h2 className="text-4xl font-bold mb-12 text-center">{t.services.title}</h2>
-           <div className="grid md:grid-cols-3 gap-8">
-              {t.services.items.map((service, idx) => (
-                <div key={idx} className="p-8 bg-slate-950 rounded-2xl border border-white/5 hover:border-neon-purple/50 transition-colors group">
-                   <service.icon className="w-10 h-10 text-neon-purple mb-6 group-hover:text-white transition-colors" />
-                   <h3 className="text-xl font-bold mb-4">{service.title}</h3>
-                   <p className="text-slate-400 leading-relaxed">{service.description}</p>
-                </div>
-              ))}
-           </div>
+           <Reveal>
+             <h2 className="text-4xl font-bold mb-12 text-center">{t.services.title}</h2>
+           </Reveal>
+           <Reveal delay={200}>
+             <div className="grid md:grid-cols-3 gap-8">
+                {t.services.items.map((service, idx) => (
+                  <div key={idx} className="p-8 bg-slate-950 rounded-2xl border border-white/5 hover:border-neon-purple/50 transition-colors group">
+                     <service.icon className="w-10 h-10 text-neon-purple mb-6 group-hover:text-white transition-colors" />
+                     <h3 className="text-xl font-bold mb-4">{service.title}</h3>
+                     <p className="text-slate-400 leading-relaxed">{service.description}</p>
+                  </div>
+                ))}
+             </div>
+           </Reveal>
         </div>
       </section>
 
-      {/* Mini Game Section */}
+      {/* Neon Game */}
       <section id="game" className="py-24 px-6 bg-gradient-to-b from-slate-950 to-slate-900 relative overflow-hidden">
         <div className="max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">{t.game.sectionTitle}</h2>
-            <p className="text-slate-400">{t.game.sectionSubtitle}</p>
-          </div>
+          <Reveal>
+            <div className="text-center mb-10">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">{t.game.sectionTitle}</h2>
+              <p className="text-slate-400">{t.game.sectionSubtitle}</p>
+            </div>
+          </Reveal>
           
-          <NeonGame language={language} />
-          
+          <Reveal delay={200}>
+            <NeonGame language={language} />
+          </Reveal>
         </div>
       </section>
 
-      {/* Contact Section */}
+      {/* Contact */}
       <section id="contact" className="py-24 px-6 relative">
          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-5xl font-bold mb-8">{t.contact.title}</h2>
-            <p className="text-xl text-slate-400 mb-12">
-               {t.contact.subtitle}
-            </p>
+            <Reveal>
+              <h2 className="text-5xl font-bold mb-8">{t.contact.title}</h2>
+              <p className="text-xl text-slate-400 mb-12">
+                 {t.contact.subtitle}
+              </p>
+            </Reveal>
             
-            {/* Action mailto para funcionalidade sem backend */}
-            <form className="max-w-md mx-auto space-y-4 text-left" action="mailto:contact@rw.dev" method="POST" encType="text/plain">
-               <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.nameLabel}</label>
-                  <input type="text" name="name" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.namePlaceholder} />
-               </div>
-               <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.emailLabel}</label>
-                  <input type="email" name="email" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.emailPlaceholder} />
-               </div>
-               <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.msgLabel}</label>
-                  <textarea rows={4} name="message" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.msgPlaceholder} />
-               </div>
-               <button className="w-full bg-white text-black font-bold py-4 rounded-lg hover:bg-neon-blue transition-colors flex items-center justify-center gap-2">
-                  {t.contact.btnSend} <Send size={18} />
-               </button>
-            </form>
+            <Reveal delay={200}>
+              <form className="max-w-md mx-auto space-y-4 text-left" action="mailto:contact@rw.dev" method="POST" encType="text/plain">
+                 <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.nameLabel}</label>
+                    <input type="text" name="name" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.namePlaceholder} />
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.emailLabel}</label>
+                    <input type="email" name="email" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.emailPlaceholder} />
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.msgLabel}</label>
+                    <textarea rows={4} name="message" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.msgPlaceholder} />
+                 </div>
+                 <button className="w-full bg-white text-black font-bold py-4 rounded-lg hover:bg-neon-blue transition-colors flex items-center justify-center gap-2">
+                    {t.contact.btnSend} <Send size={18} />
+                 </button>
+              </form>
+            </Reveal>
          </div>
       </section>
 
-      {/* Footer */}
       <footer className="py-12 px-6 border-t border-white/5 bg-slate-950">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            
             <div className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
-               <img 
-                 src="./assets/logo.png" 
-                 alt="RW.Dev" 
-                 className="h-8 w-auto brightness-0 invert" 
-               />
+               <img src="./assets/logo.png" alt="RW.Dev" className="h-8 w-auto brightness-0 invert" />
                <div className="text-xl font-bold font-mono tracking-tighter">
                  RW<span className="text-slate-600">.DEV</span>
                </div>

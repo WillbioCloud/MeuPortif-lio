@@ -1,7 +1,9 @@
 import { Code2, Globe, Palette } from 'lucide-react';
 import { Project, Service } from './types';
 
+// ... (interfaces mantidas iguais) ...
 interface TranslationData {
+  // ... mantenha as interfaces anteriores iguais ...
   nav: {
     home: string;
     about: string;
@@ -82,6 +84,7 @@ interface TranslationData {
 
 export const translations: Record<'en' | 'pt', TranslationData> = {
   en: {
+    // ... (mantenha nav, hero, about, skills iguais) ...
     nav: {
       home: 'Home',
       about: 'About',
@@ -115,28 +118,31 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     },
     projects: {
       title: 'Selected Works',
-      ctaView: 'View Case',
+      ctaView: 'Live Demo', // Mudado para Live Demo para fazer mais sentido
       items: [
         {
           id: '1',
           title: 'Setland Theme Park',
-          description: 'Immersive digital platform for a theme park with interactive maps and real-time ticketing.',
+          description: 'Immersive digital platform for a theme park with interactive maps, 3D elements and real-time ticketing system.',
           tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
-          imageUrl: 'https://picsum.photos/600/400?random=10'
+          imageUrl: './assets/castelo.png',
+          link: 'https://sitesetland.vercel.app/' // Adicione o link do setland aqui se tiver
         },
         {
           id: '2',
-          title: 'Aether Commerce',
-          description: 'Headless e-commerce solution with AI-powered product recommendations and 3D product previews.',
-          tags: ['Next.js', 'Stripe', 'Three.js', 'Node.js'],
-          imageUrl: 'https://picsum.photos/600/400?random=2'
+          title: 'Landing Page Cidade Inteligente', // NOME GENERICO - MUDE PARA O REAL
+          description: 'High-conversion landing page with modern responsive design, optimized for SEO and maximum performance.',
+          tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
+          imageUrl: './assets/cidadeinteligentelanding.png',
+          link: 'https://cidadeinteligentelanding.vercel.app/' // COLOQUE O LINK REAL AQUI
         },
         {
           id: '3',
-          title: 'Chronos Task',
-          description: 'AI-driven productivity tool that automatically schedules tasks based on energy levels.',
-          tags: ['TypeScript', 'OpenAI API', 'Firebase', 'PWA'],
-          imageUrl: 'https://picsum.photos/600/400?random=3'
+          title: 'Smart City App',
+          description: 'Mobile solution for smart city management, connecting citizens to public services with real-time reporting.',
+          tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
+          imageUrl: './assets/cidade-preview.jpg'
+          // Sem link por enquanto
         }
       ]
     },
@@ -231,28 +237,31 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     },
     projects: {
       title: 'Trabalhos Selecionados',
-      ctaView: 'Ver Case',
+      ctaView: 'Ver Online', // Alterado para indicar que vai abrir o site
       items: [
         {
           id: '1',
           title: 'Setland Theme Park',
-          description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos e sistema de tickets em tempo real.',
+          description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos, elementos 3D e sistema de tickets.',
           tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
-          imageUrl: 'https://picsum.photos/600/400?random=10'
+          imageUrl: './assets/castelo.png',
+          link: 'https://sitesetland.vercel.app/' // Coloque o link se tiver
         },
         {
           id: '2',
-          title: 'Aether Commerce',
-          description: 'Solução de e-commerce headless com recomendações de produtos via IA e visualização 3D.',
-          tags: ['Next.js', 'Stripe', 'Three.js', 'Node.js'],
-          imageUrl: 'https://picsum.photos/600/400?random=2'
+          title: 'Landing Page Cidade Inteligente',
+          description: 'Landing page de alta conversão com design responsivo moderno, otimizada para SEO e performance máxima.',
+          tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
+          imageUrl: './assets/cidadeinteligentelanding.png',
+          link: 'https://cidadeinteligentelanding.vercel.app/' // IMPORTANTE: Coloque o link real aqui
         },
         {
           id: '3',
-          title: 'Chronos Task',
-          description: 'Ferramenta de produtividade com IA que agenda tarefas automaticamente baseada em níveis de energia.',
-          tags: ['TypeScript', 'OpenAI API', 'Firebase', 'PWA'],
-          imageUrl: 'https://picsum.photos/600/400?random=3'
+          title: 'Cidade Inteligente App',
+          description: 'Solução mobile para gestão de cidades inteligentes, conectando cidadãos a serviços públicos com reportes em tempo real.',
+          tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
+          imageUrl: './assets/cidade-preview.jpg'
+          // Sem link propositalmente
         }
       ]
     },
