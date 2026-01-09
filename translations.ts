@@ -119,10 +119,10 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       items: [
         {
           id: '1',
-          title: 'Nebula Dashboard',
-          description: 'A futuristic analytics dashboard for crypto trading with real-time WebSocket data visualization.',
-          tags: ['React', 'D3.js', 'WebSockets', 'Tailwind'],
-          imageUrl: 'https://picsum.photos/600/400?random=1'
+          title: 'Setland Theme Park',
+          description: 'Immersive digital platform for a theme park with interactive maps and real-time ticketing.',
+          tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
+          imageUrl: 'https://picsum.photos/600/400?random=10'
         },
         {
           id: '2',
@@ -235,10 +235,10 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       items: [
         {
           id: '1',
-          title: 'Nebula Dashboard',
-          description: 'Dashboard analítico futurista para trading de cripto com visualização de dados via WebSocket em tempo real.',
-          tags: ['React', 'D3.js', 'WebSockets', 'Tailwind'],
-          imageUrl: 'https://picsum.photos/600/400?random=1'
+          title: 'Setland Theme Park',
+          description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos e sistema de tickets em tempo real.',
+          tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
+          imageUrl: 'https://picsum.photos/600/400?random=10'
         },
         {
           id: '2',

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowRight, Github, Linkedin, Twitter, Mail, Send } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Twitter, Mail, Send } from 'lucide-react';
 import CustomCursor from './components/CustomCursor';
 import NeonGame from './components/NeonGame';
 import Projects from './components/Projects';
+import Hero from './components/Hero';
+import About from './components/About';
 import { SKILLS } from './constants';
 import { translations } from './translations';
 import { Language } from './types';
@@ -11,6 +13,7 @@ const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
+  const [isTouch, setIsTouch] = useState(false);
 
   // Short alias for translations
   const t = translations[language];
@@ -20,6 +23,10 @@ const App: React.FC = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener('scroll', handleScroll);
+    
+    // Detect touch device to disable custom cursor logic if needed
+    setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -36,7 +43,8 @@ const App: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 selection:bg-neon-purple selection:text-white overflow-hidden">
+    // Adiciona classe 'cursor-none' apenas se NÃO for dispositivo touch
+    <div className={`min-h-screen bg-slate-950 text-slate-200 selection:bg-neon-purple selection:text-white overflow-hidden ${!isTouch ? 'cursor-none' : ''}`}>
       <CustomCursor />
 
       {/* Background Ambience */}
@@ -53,9 +61,8 @@ const App: React.FC = () => {
           <a href="#" className="flex items-center gap-3 group">
             <div className="relative">
               <div className="absolute inset-0 bg-neon-blue/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              {/* Note: 'brightness-0 invert' makes a black logo white. Remove if logo is already colored/white */}
               <img 
-                src="../assets/logo.png" 
+                src="./assets/logo.png" 
                 alt="RW.Dev Logo" 
                 className="h-10 w-auto relative z-10 object-contain brightness-0 invert transition-transform duration-300 group-hover:scale-105" 
               />
@@ -128,79 +135,14 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Hero Section */}
-      <section id="home" className="relative pt-32 pb-20 px-6 min-h-screen flex flex-col justify-center items-center text-center z-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-neon-purple/50 bg-neon-purple/10 text-neon-purple text-sm font-mono animate-float">
-            {t.hero.badge}
-          </div>
-          <h1 className="text-5xl md:text-8xl font-bold tracking-tight mb-8 leading-tight">
-            {t.hero.titleStart} <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue via-white to-neon-purple">
-              {t.hero.titleHighlight}
-            </span> {t.hero.titleEnd}
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            {t.hero.subtitle}
-          </p>
-          
-          <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-             <a href="#projects" className="group relative px-8 py-4 bg-white text-black font-bold rounded-full overflow-hidden">
-                <div className="absolute inset-0 bg-neon-blue translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <span className="relative z-10 group-hover:text-white transition-colors flex items-center gap-2">
-                  {t.hero.ctaProject} <ArrowRight size={18} />
-                </span>
-             </a>
-             <a href="#about" className="px-8 py-4 text-white border border-white/20 rounded-full hover:bg-white/5 transition-colors">
-                {t.hero.ctaAbout}
-             </a>
-          </div>
-        </div>
-        
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
-          <span className="text-xs font-mono uppercase tracking-widest">{t.hero.scroll}</span>
-          <div className="w-px h-12 bg-gradient-to-b from-white to-transparent" />
-        </div>
-      </section>
+      {/* Hero Component */}
+      <Hero language={language} />
 
-      {/* About & Stats */}
-      <section id="about" className="py-24 px-6 relative z-10 bg-slate-900/50">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-          <div className="relative">
-             <div className="aspect-square rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 relative z-10">
-                <img src="https://picsum.photos/800/800?random=10" alt="Portrait" className="w-full h-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60" />
-             </div>
-             {/* Decorative Elements */}
-             <div className="absolute -bottom-10 -right-10 w-full h-full border-2 border-neon-blue/30 rounded-2xl -z-0" />
-          </div>
-          
-          <div>
-            <h2 className="text-4xl font-bold mb-6">{t.about.title}</h2>
-            <p className="text-slate-400 mb-6 text-lg leading-relaxed">
-              {t.about.p1}
-            </p>
-            <p className="text-slate-400 mb-8 text-lg leading-relaxed">
-              {t.about.p2}
-            </p>
-
-            <div className="grid grid-cols-2 gap-6">
-               <div className="p-4 bg-slate-800/50 rounded-lg border border-white/5">
-                  <h3 className="text-3xl font-bold text-neon-blue mb-1">{t.about.statExp}</h3>
-                  <p className="text-sm text-slate-500 font-mono">{t.about.statExpLabel}</p>
-               </div>
-               <div className="p-4 bg-slate-800/50 rounded-lg border border-white/5">
-                  <h3 className="text-3xl font-bold text-neon-purple mb-1">{t.about.statProj}</h3>
-                  <p className="text-sm text-slate-500 font-mono">{t.about.statProjLabel}</p>
-               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* About Component */}
+      <About language={language} />
 
       {/* Skills */}
-      <section className="py-24 px-6 z-10">
+      <section className="py-24 px-6 z-10 relative">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
              <h2 className="text-3xl font-bold mb-4">{t.skills.title}</h2>
@@ -221,6 +163,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Projects Component */}
       <Projects language={language} />
 
       {/* Services */}
@@ -260,18 +203,19 @@ const App: React.FC = () => {
                {t.contact.subtitle}
             </p>
             
-            <form className="max-w-md mx-auto space-y-4 text-left" onSubmit={(e) => e.preventDefault()}>
+            {/* Action mailto para funcionalidade sem backend */}
+            <form className="max-w-md mx-auto space-y-4 text-left" action="mailto:contact@rw.dev" method="POST" encType="text/plain">
                <div>
                   <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.nameLabel}</label>
-                  <input type="text" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.namePlaceholder} />
+                  <input type="text" name="name" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.namePlaceholder} />
                </div>
                <div>
                   <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.emailLabel}</label>
-                  <input type="email" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.emailPlaceholder} />
+                  <input type="email" name="email" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.emailPlaceholder} />
                </div>
                <div>
                   <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.msgLabel}</label>
-                  <textarea rows={4} className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.msgPlaceholder} />
+                  <textarea rows={4} name="message" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.msgPlaceholder} />
                </div>
                <button className="w-full bg-white text-black font-bold py-4 rounded-lg hover:bg-neon-blue transition-colors flex items-center justify-center gap-2">
                   {t.contact.btnSend} <Send size={18} />
@@ -286,7 +230,7 @@ const App: React.FC = () => {
             
             <div className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
                <img 
-                 src="/logo.png" 
+                 src="./assets/logo.png" 
                  alt="RW.Dev" 
                  className="h-8 w-auto brightness-0 invert" 
                />
