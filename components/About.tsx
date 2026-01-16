@@ -14,7 +14,7 @@ const About: React.FC<AboutProps> = ({ language }) => {
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
         <div className="relative">
            <div className="aspect-square rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 relative z-10">
-              <img src="https://picsum.photos/800/800?random=10" alt="Portrait" className="w-full h-full object-cover" />
+              <img src="https://res.cloudinary.com/dxplpg36m/image/upload/v1768600146/Gemini_Generated_Image_j0uar6j0uar6j0ua_wyxww0.png" alt="Portrait" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-60" />
            </div>
            {/* Decorative Elements */}
