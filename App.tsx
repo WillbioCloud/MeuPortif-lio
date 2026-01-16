@@ -57,7 +57,7 @@ const App: React.FC = () => {
             <div className="relative">
               <div className="absolute inset-0 bg-neon-blue/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img 
-                src="./assets/logo.png" 
+                src="https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/logo_mw7zhr.png" 
                 alt="RW.Dev Logo" 
                 className="h-10 w-auto relative z-10 object-contain brightness-0 invert transition-transform duration-300 group-hover:scale-105" 
               />
