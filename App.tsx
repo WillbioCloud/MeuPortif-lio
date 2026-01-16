@@ -237,7 +237,7 @@ const App: React.FC = () => {
       <footer className="py-12 px-6 border-t border-white/5 bg-slate-950">
          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity">
-               <img src="./assets/logo.png" alt="RW.Dev" className="h-8 w-auto brightness-0 invert" />
+               <img src="https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/logo_mw7zhr.png" alt="RW.Dev" className="h-8 w-auto brightness-0 invert" />
                <div className="text-xl font-bold font-mono tracking-tighter">
                  RW<span className="text-slate-600">.DEV</span>
                </div>
