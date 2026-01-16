@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Github, Linkedin, Twitter, Mail, Send } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Twitter, Mail, Send, MessageCircle, Calculator } from 'lucide-react';
 import CustomCursor from './components/CustomCursor';
 import NeonGame from './components/NeonGame';
 import Projects from './components/Projects';
 import Hero from './components/Hero';
 import About from './components/About';
-import Reveal from './components/Reveal'; // Importe o Reveal
+import Reveal from './components/Reveal';
 import { SKILLS } from './constants';
 import { translations } from './translations';
 import { Language } from './types';
@@ -15,6 +15,10 @@ const App: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState<Language>('en');
   const [isTouch, setIsTouch] = useState(false);
+  
+  // Estado para o formulário e orçamento
+  const [formData, setFormData] = useState({ name: '', type: '' });
+  const [quote, setQuote] = useState<string | null>(null);
 
   const t = translations[language];
 
@@ -29,6 +33,56 @@ const App: React.FC = () => {
 
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'en' ? 'pt' : 'en');
+    setQuote(null); // Limpa orçamento ao trocar lingua
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'type') setQuote(null); // Limpa orçamento se mudar o tipo
+  };
+
+  const calculateQuote = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    if (!formData.type) return;
+
+    // Tabela de Preços (Exemplo)
+    // PT em Reais, EN em Dólares
+    const prices: Record<string, { pt: string, en: string }> = {
+        landing: { pt: 'R$ 1.500 - R$ 3.000', en: '$400 - $800' },
+        institutional: { pt: 'R$ 3.000 - R$ 6.000', en: '$800 - $1.500' },
+        ecommerce: { pt: 'R$ 8.000 - R$ 15.000', en: '$2.000 - $4.000' },
+        app: { pt: 'A partir de R$ 12.000', en: 'Starting at $3.000' },
+        system: { pt: 'A partir de R$ 10.000', en: 'Starting at $2.500' },
+        other: { pt: 'Sob consulta', en: 'Contact for quote' }
+    };
+
+    const price = prices[formData.type];
+    if (price) {
+        setQuote(price[language]);
+    }
+  };
+
+  const handleWhatsAppClick = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.type) {
+        alert(language === 'pt' ? 'Por favor, preencha todos os campos.' : 'Please fill in all fields.');
+        return;
+    }
+
+    const PHONE_NUMBER = '5564999232217'; // Substitua pelo seu
+    
+    // Pega o nome legível do tipo de projeto para a mensagem
+    const projectTypeName = t.contact.projectTypes[formData.type as keyof typeof t.contact.projectTypes];
+
+    const message = language === 'pt' 
+        ? `Olá! Meu nome é ${formData.name}. Gostaria de falar sobre um projeto do tipo: ${projectTypeName}.`
+        : `Hello! My name is ${formData.name}. I would like to talk about a project of type: ${projectTypeName}.`;
+    
+    const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
   };
 
   const navLinks = [
@@ -213,21 +267,68 @@ const App: React.FC = () => {
             </Reveal>
             
             <Reveal delay={200}>
-              <form className="max-w-md mx-auto space-y-4 text-left" action="mailto:contact@rw.dev" method="POST" encType="text/plain">
+              <form className="max-w-md mx-auto space-y-4 text-left" onSubmit={handleWhatsAppClick}>
                  <div>
                     <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.nameLabel}</label>
-                    <input type="text" name="name" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.namePlaceholder} />
+                    <input 
+                        type="text" 
+                        name="name" 
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" 
+                        placeholder={t.contact.namePlaceholder} 
+                    />
                  </div>
                  <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.emailLabel}</label>
-                    <input type="email" name="email" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.emailPlaceholder} />
+                    <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.typeLabel}</label>
+                    
+                    <div className="flex gap-2">
+                        <div className="relative flex-grow">
+                            <select 
+                                name="type"
+                                value={formData.type}
+                                onChange={handleInputChange}
+                                className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors appearance-none cursor-pointer"
+                            >
+                                <option value="" disabled>{t.contact.projectTypes.placeholder}</option>
+                                <option value="landing">{t.contact.projectTypes.landing}</option>
+                                <option value="institutional">{t.contact.projectTypes.institutional}</option>
+                                <option value="ecommerce">{t.contact.projectTypes.ecommerce}</option>
+                                <option value="app">{t.contact.projectTypes.app}</option>
+                                <option value="system">{t.contact.projectTypes.system}</option>
+                                <option value="other">{t.contact.projectTypes.other}</option>
+                            </select>
+                            {/* Seta customizada do select */}
+                            <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-400">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+
+                        {/* Botão de Orçamento */}
+                        <button 
+                            type="button"
+                            onClick={calculateQuote}
+                            className="bg-slate-800 border border-slate-700 hover:border-neon-purple hover:text-neon-purple text-slate-300 p-3 rounded-lg transition-colors flex items-center justify-center"
+                            title={t.contact.btnQuote}
+                        >
+                            <Calculator size={20} />
+                        </button>
+                    </div>
+
+                    {/* Exibição do Orçamento */}
+                    <div className={`mt-3 overflow-hidden transition-all duration-500 ease-out ${quote ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
+                        <div className="bg-neon-purple/10 border border-neon-purple/30 rounded-lg p-3 text-center">
+                            <span className="text-sm text-neon-purple font-mono">
+                                {t.contact.quoteLabel} 
+                                <span className="font-bold text-white text-lg ml-1">{quote}</span>
+                            </span>
+                        </div>
+                    </div>
+
                  </div>
-                 <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.msgLabel}</label>
-                    <textarea rows={4} name="message" className="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:border-neon-blue transition-colors" placeholder={t.contact.msgPlaceholder} />
-                 </div>
-                 <button className="w-full bg-white text-black font-bold py-4 rounded-lg hover:bg-neon-blue transition-colors flex items-center justify-center gap-2">
-                    {t.contact.btnSend} <Send size={18} />
+                 
+                 <button className="w-full bg-green-600 text-white font-bold py-4 rounded-lg hover:bg-green-500 transition-colors flex items-center justify-center gap-2 mt-4 shadow-lg hover:shadow-green-500/20">
+                    {t.contact.btnSend} <MessageCircle size={20} />
                  </button>
               </form>
             </Reveal>

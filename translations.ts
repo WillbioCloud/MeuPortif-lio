@@ -1,9 +1,7 @@
 import { Code2, Globe, Palette } from 'lucide-react';
 import { Project, Service } from './types';
 
-// ... (interfaces mantidas iguais) ...
 interface TranslationData {
-  // ... mantenha as interfaces anteriores iguais ...
   nav: {
     home: string;
     about: string;
@@ -71,11 +69,20 @@ interface TranslationData {
     subtitle: string;
     nameLabel: string;
     namePlaceholder: string;
-    emailLabel: string;
-    emailPlaceholder: string;
-    msgLabel: string;
-    msgPlaceholder: string;
+    typeLabel: string;
     btnSend: string;
+    // Novos campos para o orçamento
+    btnQuote: string;
+    quoteLabel: string;
+    projectTypes: {
+        placeholder: string;
+        landing: string;
+        institutional: string;
+        ecommerce: string;
+        app: string;
+        system: string;
+        other: string;
+    };
   };
   footer: {
     rights: string;
@@ -84,7 +91,6 @@ interface TranslationData {
 
 export const translations: Record<'en' | 'pt', TranslationData> = {
   en: {
-    // ... (mantenha nav, hero, about, skills iguais) ...
     nav: {
       home: 'Home',
       about: 'About',
@@ -118,7 +124,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     },
     projects: {
       title: 'Selected Works',
-      ctaView: 'Live Demo', // Mudado para Live Demo para fazer mais sentido
+      ctaView: 'Live Demo',
       items: [
         {
           id: '1',
@@ -126,15 +132,15 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Immersive digital platform for a theme park with interactive maps, 3D elements and real-time ticketing system.',
           tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
-          link: 'https://sitesetland.vercel.app/' // Adicione o link do setland aqui se tiver
+          link: 'https://sitesetland.vercel.app/'
         },
         {
           id: '2',
-          title: 'Landing Page Cidade Inteligente', // NOME GENERICO - MUDE PARA O REAL
+          title: 'Landing Page Cidade Inteligente',
           description: 'High-conversion landing page with modern responsive design, optimized for SEO and maximum performance.',
           tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768597084/Captura_de_tela_2026-01-16_175711_gofacg.png',
-          link: 'https://cidadeinteligentelanding.vercel.app/' // COLOQUE O LINK REAL AQUI
+          link: 'https://cidadeinteligentelanding.vercel.app/'
         },
         {
           id: '3',
@@ -142,14 +148,13 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Mobile solution for smart city management, connecting citizens to public services with real-time reporting.',
           tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
           imageUrl: './assets/cidade-preview.jpg'
-          // Sem link por enquanto
         },
         {
-          id: '4', // Next ID
+          id: '4',
           title: 'Ollivander Bistrô & Café',
           description: 'A magical Harry Potter-themed experience featuring parallax scrolling, 3D interactive elements (Golden Snitch), and a custom map.',
           tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
-          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png', // Placeholder
+          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/'
         }
       ]
@@ -198,14 +203,22 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     },
     contact: {
       title: 'Ready to start?',
-      subtitle: "I'm currently available for freelance projects and open to full-time opportunities.",
+      subtitle: "Let's bring your ideas to life. Start a chat on WhatsApp.",
       nameLabel: 'Name',
-      namePlaceholder: 'John Doe',
-      emailLabel: 'Email',
-      emailPlaceholder: 'john@example.com',
-      msgLabel: 'Message',
-      msgPlaceholder: 'Tell me about your project...',
-      btnSend: 'Send Message'
+      namePlaceholder: 'Your Name',
+      typeLabel: 'Project Type',
+      btnSend: 'Start WhatsApp Chat',
+      btnQuote: 'Calculate Estimate',
+      quoteLabel: 'Estimated Investment: ',
+      projectTypes: {
+          placeholder: 'Select a project type...',
+          landing: 'Landing Page',
+          institutional: 'Institutional Website',
+          ecommerce: 'E-commerce',
+          app: 'Mobile App',
+          system: 'Web System / Dashboard',
+          other: 'Other'
+      }
     },
     footer: {
       rights: 'All rights reserved.'
@@ -245,7 +258,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     },
     projects: {
       title: 'Trabalhos Selecionados',
-      ctaView: 'Ver Online', // Alterado para indicar que vai abrir o site
+      ctaView: 'Ver Online',
       items: [
         {
           id: '1',
@@ -253,7 +266,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos, elementos 3D e sistema de tickets.',
           tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
-          link: 'https://sitesetland.vercel.app/' // Coloque o link se tiver
+          link: 'https://sitesetland.vercel.app/'
         },
         {
           id: '2',
@@ -261,7 +274,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Landing page de alta conversão com design responsivo moderno, otimizada para SEO e performance máxima.',
           tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768597084/Captura_de_tela_2026-01-16_175711_gofacg.png',
-          link: 'https://cidadeinteligentelanding.vercel.app/' // IMPORTANTE: Coloque o link real aqui
+          link: 'https://cidadeinteligentelanding.vercel.app/'
         },
         {
           id: '3',
@@ -269,14 +282,13 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Solução mobile para gestão de cidades inteligentes, conectando cidadãos a serviços públicos com reportes em tempo real.',
           tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
           imageUrl: './assets/cidade-preview.jpg'
-          // Sem link propositalmente
         },
         {
           id: '4',
           title: 'Ollivander Bistrô & Café',
           description: 'Uma experiência mágica com temática de Harry Potter, apresentando rolagem parallax, elementos 3D interativos (Pomo de Ouro) e mapa personalizado.',
           tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
-          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png', // Placeholder
+          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/'
         }
       ]
@@ -325,14 +337,22 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     },
     contact: {
       title: 'Vamos começar?',
-      subtitle: "Atualmente disponível para projetos freelance e aberto a oportunidades full-time.",
+      subtitle: "Vamos tirar sua ideia do papel. Me chame no WhatsApp e vamos conversar.",
       nameLabel: 'Nome',
       namePlaceholder: 'Seu Nome',
-      emailLabel: 'Email',
-      emailPlaceholder: 'seu@email.com',
-      msgLabel: 'Mensagem',
-      msgPlaceholder: 'Conte sobre seu projeto...',
-      btnSend: 'Enviar Mensagem'
+      typeLabel: 'Tipo de Projeto',
+      btnSend: 'Iniciar Conversa no WhatsApp',
+      btnQuote: 'Calcular Estimativa',
+      quoteLabel: 'Investimento Aproximado: ',
+      projectTypes: {
+          placeholder: 'Selecione o tipo...',
+          landing: 'Landing Page',
+          institutional: 'Site Institucional',
+          ecommerce: 'E-commerce',
+          app: 'Aplicativo Mobile',
+          system: 'Sistema Web / Dashboard',
+          other: 'Outro'
+      }
     },
     footer: {
       rights: 'Todos os direitos reservados.'
