@@ -130,7 +130,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '1',
           title: 'Setland Theme Park',
           description: 'Immersive digital platform for a theme park with interactive maps, 3D elements and real-time ticketing system.',
-          tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
+          tags: ['HTML', 'React', 'CSS', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
           link: 'https://sitesetland.vercel.app/'
         },
@@ -146,14 +146,14 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '3',
           title: 'Smart City App',
           description: 'Mobile solution for smart city management, connecting citizens to public services with real-time reporting.',
-          tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
+          tags: ['React Native', 'Maps API', 'Supabase'],
           imageUrl: './assets/cidade-preview.jpg'
         },
         {
           id: '4',
           title: 'Ollivander Bistrô & Café',
           description: 'A magical Harry Potter-themed experience featuring parallax scrolling, 3D interactive elements (Golden Snitch), and a custom map.',
-          tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
+          tags: ['HTML', 'React', '3D', 'CSS', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/'
         }
@@ -264,7 +264,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '1',
           title: 'Setland Theme Park',
           description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos, elementos 3D e sistema de tickets.',
-          tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
+          tags: ['HTML', 'React', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
           link: 'https://sitesetland.vercel.app/'
         },
@@ -280,14 +280,14 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '3',
           title: 'Cidade Inteligente App',
           description: 'Solução mobile para gestão de cidades inteligentes, conectando cidadãos a serviços públicos com reportes em tempo real.',
-          tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
+          tags: ['React Native', 'Maps API', 'Supabase'],
           imageUrl: './assets/cidade-preview.jpg'
         },
         {
           id: '4',
           title: 'Ollivander Bistrô & Café',
           description: 'Uma experiência mágica com temática de Harry Potter, apresentando rolagem parallax, elementos 3D interativos (Pomo de Ouro) e mapa personalizado.',
-          tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
+          tags: ['HTML', 'React', '3D', 'CSS', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/'
         }
