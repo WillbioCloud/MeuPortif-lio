@@ -9,6 +9,7 @@ export interface Project {
   tags: string[];
   imageUrl: string;
   link?: string;
+  videoUrl?: string; // Adicionado para suportar o vídeo
 }
 
 export interface Skill {

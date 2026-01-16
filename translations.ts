@@ -71,7 +71,6 @@ interface TranslationData {
     namePlaceholder: string;
     typeLabel: string;
     btnSend: string;
-    // Novos campos para o orçamento
     btnQuote: string;
     quoteLabel: string;
     projectTypes: {
@@ -115,7 +114,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       p2: 'Currently specializing in the React ecosystem (Next.js), Node.js backends, and creative WebGL implementations.',
       statExp: '5+',
       statExpLabel: 'YEARS EXPERIENCE',
-      statProj: '10+',
+      statProj: '50+',
       statProjLabel: 'PROJECTS SHIPPED'
     },
     skills: {
@@ -130,7 +129,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '1',
           title: 'Setland Theme Park',
           description: 'Immersive digital platform for a theme park with interactive maps, 3D elements and real-time ticketing system.',
-          tags: ['HTML', 'React', 'CSS', 'Framer Motion'],
+          tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
           link: 'https://sitesetland.vercel.app/'
         },
@@ -146,14 +145,15 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '3',
           title: 'Smart City App',
           description: 'Mobile solution for smart city management, connecting citizens to public services with real-time reporting.',
-          tags: ['React Native', 'Maps API', 'Supabase'],
-          imageUrl: '.https://res.cloudinary.com/dxplpg36m/video/upload/v1768604952/ScreenRecording_07-28-2025_11-00-02_1_p0tdbr.mov'
+          tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
+          imageUrl: './assets/cidade-preview.jpg', // Mantive sua imagem local
+          videoUrl: 'https://res.cloudinary.com/dxplpg36m/video/upload/v1768604952/ScreenRecording_07-28-2025_11-00-02_1_p0tdbr.mov' // Vídeo Exemplo
         },
         {
           id: '4',
           title: 'Ollivander Bistrô & Café',
           description: 'A magical Harry Potter-themed experience featuring parallax scrolling, 3D interactive elements (Golden Snitch), and a custom map.',
-          tags: ['HTML', 'React', '3D', 'CSS', 'Framer Motion'],
+          tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/'
         }
@@ -249,7 +249,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       p2: 'Atualmente especializado no ecossistema React (Next.js), backends em Node.js e implementações criativas em WebGL.',
       statExp: '5+',
       statExpLabel: 'ANOS DE EXPERIÊNCIA',
-      statProj: '10+',
+      statProj: '50+',
       statProjLabel: 'PROJETOS ENTREGUES'
     },
     skills: {
@@ -264,7 +264,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '1',
           title: 'Setland Theme Park',
           description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos, elementos 3D e sistema de tickets.',
-          tags: ['HTML', 'React', 'Supabase', 'Tailwind'],
+          tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
           link: 'https://sitesetland.vercel.app/'
         },
@@ -280,21 +280,22 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '3',
           title: 'Cidade Inteligente App',
           description: 'Solução mobile para gestão de cidades inteligentes, conectando cidadãos a serviços públicos com reportes em tempo real.',
-          tags: ['React Native', 'Maps API', 'Supabase'],
-          imageUrl: './assets/cidade-preview.jpg'
+          tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
+          imageUrl: './assets/cidade-preview.jpg',
+          videoUrl: 'https://res.cloudinary.com/dxplpg36m/video/upload/v1768604952/ScreenRecording_07-28-2025_11-00-02_1_p0tdbr.mov' // Vídeo Exemplo
         },
         {
           id: '4',
           title: 'Ollivander Bistrô & Café',
           description: 'Uma experiência mágica com temática de Harry Potter, apresentando rolagem parallax, elementos 3D interativos (Pomo de Ouro) e mapa personalizado.',
-          tags: ['HTML', 'React', '3D', 'CSS', 'Framer Motion'],
+          tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/'
         }
       ]
     },
     services: {
-      title: 'Serviços',
+      title: 'Services',
       items: [
         {
           title: 'Engenharia Frontend',
