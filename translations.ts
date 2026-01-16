@@ -133,7 +133,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           title: 'Landing Page Cidade Inteligente', // NOME GENERICO - MUDE PARA O REAL
           description: 'High-conversion landing page with modern responsive design, optimized for SEO and maximum performance.',
           tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
-          imageUrl: './assets/cidadeinteligentelanding.png',
+          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768597084/Captura_de_tela_2026-01-16_175711_gofacg.png',
           link: 'https://cidadeinteligentelanding.vercel.app/' // COLOQUE O LINK REAL AQUI
         },
         {
