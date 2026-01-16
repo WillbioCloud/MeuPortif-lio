@@ -147,7 +147,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           title: 'Smart City App',
           description: 'Mobile solution for smart city management, connecting citizens to public services with real-time reporting.',
           tags: ['React Native', 'Maps API', 'Supabase'],
-          imageUrl: './assets/cidade-preview.jpg'
+          imageUrl: '.https://res.cloudinary.com/dxplpg36m/video/upload/v1768604952/ScreenRecording_07-28-2025_11-00-02_1_p0tdbr.mov'
         },
         {
           id: '4',
