@@ -260,7 +260,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           title: 'Landing Page Cidade Inteligente',
           description: 'Landing page de alta conversão com design responsivo moderno, otimizada para SEO e performance máxima.',
           tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
-          imageUrl: './assets/cidadeinteligentelanding.png',
+          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768597084/Captura_de_tela_2026-01-16_175711_gofacg.png',
           link: 'https://cidadeinteligentelanding.vercel.app/' // IMPORTANTE: Coloque o link real aqui
         },
         {
