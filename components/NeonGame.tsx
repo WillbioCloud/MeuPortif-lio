@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Maximize2, Minimize2, Play, RefreshCw, Trophy, Zap, Shield, Heart, Crosshair, ChevronsUp, Activity, Plus, Flame } from 'lucide-react';
+import { Maximize2, Minimize2, Play, Heart, Shield, Zap, Crosshair, ChevronsUp, Activity, Plus, Flame, Smartphone } from 'lucide-react';
 import { translations } from '../translations';
 import { Language } from '../types';
 
@@ -89,6 +89,7 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
   const [buffSelection, setBuffSelection] = useState<BossBuffType[] | null>(null);
   const [wave, setWave] = useState(1);
   const [activeBuffs, setActiveBuffs] = useState<AllBuffs[]>([]);
+  const [showRotateMessage, setShowRotateMessage] = useState(false);
 
   const gameState = useRef<GameState>({
     player: { x: 0, y: 0, w: 30, h: 30, vx: 0, vy: 0, hp: 5, maxHp: 5, shield: 0, maxShield: 2, speed: 5, fireRate: 300, damage: 1, multishot: 1, bulletType: 'normal' },
@@ -100,6 +101,78 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
   });
 
   const requestRef = useRef<number>();
+
+  // === FUNÇÃO DE FULLSCREEN ROBUSTA ===
+  const toggleFullscreen = async () => {
+      if (!containerRef.current) return;
+      
+      try {
+          if (!document.fullscreenElement && !(document as any).webkitFullscreenElement) {
+              // Tenta entrar em fullscreen (Suporte Cross-Browser)
+              const el = containerRef.current as any;
+              if (el.requestFullscreen) await el.requestFullscreen();
+              else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen(); // iOS Safari
+              else if (el.msRequestFullscreen) await el.msRequestFullscreen();
+              
+              // Tenta travar a orientação (Android funciona bem, iOS ignora as vezes)
+              if (screen.orientation && (screen.orientation as any).lock) {
+                  try {
+                      await (screen.orientation as any).lock('landscape');
+                  } catch (e) {
+                      console.log('Orientation lock not supported/allowed on this device');
+                  }
+              }
+              setIsFullscreen(true);
+          } else {
+              // Sair do fullscreen
+              if (document.exitFullscreen) await document.exitFullscreen();
+              else if ((document as any).webkitExitFullscreen) await (document as any).webkitExitFullscreen(); // iOS Safari
+              
+              if (screen.orientation && (screen.orientation as any).unlock) {
+                  (screen.orientation as any).unlock();
+              }
+              setIsFullscreen(false);
+          }
+      } catch (err) {
+          console.error("Erro ao alternar fullscreen:", err);
+      }
+  };
+
+  // Monitorar mudanças reais de fullscreen (Botão voltar do Android ou ESC)
+  useEffect(() => {
+      const handleResize = () => {
+          // Checa se está em portrait enquanto em fullscreen para mostrar aviso
+          if (document.fullscreenElement || (document as any).webkitFullscreenElement) {
+             if (window.innerHeight > window.innerWidth) setShowRotateMessage(true);
+             else setShowRotateMessage(false);
+          } else {
+             setShowRotateMessage(false);
+          }
+
+          if (containerRef.current && canvasRef.current) {
+             canvasRef.current.width = containerRef.current.clientWidth;
+             canvasRef.current.height = containerRef.current.clientHeight;
+          }
+      };
+
+      const handleFullscreenChange = () => {
+          const isFull = !!document.fullscreenElement || !!(document as any).webkitFullscreenElement;
+          setIsFullscreen(isFull);
+          if (!isFull) setShowRotateMessage(false);
+          // Pequeno delay para garantir que o navegador redimensionou
+          setTimeout(handleResize, 100);
+      };
+
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+      window.addEventListener('resize', handleResize);
+      
+      return () => {
+          document.removeEventListener('fullscreenchange', handleFullscreenChange);
+          document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+          window.removeEventListener('resize', handleResize);
+      };
+  }, []);
 
   // === DESENHO ===
   const drawPlayerShip = (ctx: CanvasRenderingContext2D, p: GameState['player']) => {
@@ -800,11 +873,21 @@ const NeonGame: React.FC<NeonGameProps> = ({ language }) => {
                 <div className="bg-slate-900/80 p-2 rounded border border-white/10 text-neon-blue font-mono text-sm flex items-center gap-1">WAVE {wave}</div>
              </div>
              <div className="flex gap-2 pointer-events-auto">
-                 <button onClick={() => { if(!document.fullscreenElement) containerRef.current?.requestFullscreen().then(() => setIsFullscreen(true)); else document.exitFullscreen().then(() => setIsFullscreen(false)); }} className="p-2 bg-slate-800 text-white rounded"><Maximize2 size={16} /></button>
+                 <button onClick={toggleFullscreen} className="p-2 bg-slate-800 text-white rounded"><Maximize2 size={16} /></button>
              </div>
           </div>
           {activeBuffs.length > 0 && <div className="flex gap-1 flex-wrap">{activeBuffs.map((b, i) => <div key={i} className="bg-slate-800/80 p-1 rounded border border-white/5" title={t.buffs[b as keyof typeof t.buffs]}>{getBuffIcon(b)}</div>)}</div>}
       </div>
+      
+      {/* Mensagem de Rotação (Apenas mobile em portrait fullscreen) */}
+      {showRotateMessage && (
+          <div className="absolute inset-0 bg-slate-950/90 z-40 flex flex-col items-center justify-center text-center p-6 animate-in fade-in">
+              <Smartphone size={64} className="text-neon-blue mb-4 animate-bounce" />
+              <h2 className="text-2xl font-bold text-white mb-2">Gire seu celular</h2>
+              <p className="text-slate-400">Para melhor experiência, jogue na horizontal.</p>
+          </div>
+      )}
+
       {bossWarning && <div className="absolute inset-0 flex items-center justify-center pointer-events-none"><div className="bg-red-500/20 w-full py-4 text-center"><h2 className="text-4xl font-black text-red-500 animate-pulse tracking-widest">{bossWarning}</h2></div></div>}
       {buffSelection && <div className="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center z-20 animate-in fade-in"><h2 className="text-3xl font-bold text-white mb-8">{t.chooseUpgrade}</h2><div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 w-full max-w-4xl">{buffSelection.map((buff, idx) => <button key={idx} onClick={() => applyBossBuff(buff)} className="bg-slate-900 border border-neon-blue/30 p-6 rounded-xl hover:bg-slate-800 hover:scale-105 transition-all group flex flex-col items-center gap-4"><div className="p-4 bg-slate-950 rounded-full group-hover:shadow-[0_0_20px_rgba(0,243,255,0.3)]">{getBuffIcon(buff)}</div><div className="text-xl font-bold text-white">{t.buffs[buff as keyof typeof t.buffs]}</div></button>)}</div></div>}
       {(!isPlaying || gameWon) && <div className="absolute inset-0 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm z-10"><div className="text-center max-w-lg px-6">{gameWon ? <><h2 className="text-5xl font-bold text-neon-green mb-4 tracking-tighter">{t.gameWonTitle}</h2><div className="text-white text-lg mb-8 leading-relaxed font-mono border border-neon-green/30 p-6 rounded-lg bg-green-950/30">{t.gameWonMessage}</div><div className="text-2xl font-bold text-white mb-8">FINAL SCORE: {score}</div></> : <><h2 className="text-5xl font-bold text-white mb-4">{t.readyTitle}</h2>{gameOver && <div className="text-red-500 text-2xl font-bold mb-4">{t.gameOverTitle} - SCORE: {score}</div>}</>}<button onClick={initGame} className="px-8 py-4 bg-neon-blue text-black font-bold text-xl rounded hover:scale-105 transition-all w-full flex items-center justify-center gap-2"><Play size={24} fill="black" /> {gameOver || gameWon ? t.btnRetry : t.btnStart}</button></div></div>}
