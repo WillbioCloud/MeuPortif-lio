@@ -5,14 +5,32 @@ import { Language } from '../types';
 
 interface ProjectsProps {
   language: Language;
-  onSelectProject: (category: string) => void; // Recebendo a função do Pai
+  onSelectProject: (category: string) => void;
 }
 
 const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
   const content = translations[language].projects;
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  
+  // Controle do Modal de Tela Cheia (Mobile/Expandido)
+  const [activeVideoModal, setActiveVideoModal] = useState<string | null>(null);
+  
+  // Controle de qual card está tocando vídeo "inline" (Desktop)
+  const [playingCard, setPlayingCard] = useState<string | null>(null);
+  
   const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
   const [feedbackIcon, setFeedbackIcon] = useState<{ id: string, type: 'play' | 'pause' } | null>(null);
+
+  // Inicia o vídeo no card (Desktop)
+  const handlePlayInline = (e: React.MouseEvent, projectId: string) => {
+    e.stopPropagation();
+    setPlayingCard(projectId);
+  };
+
+  // Fecha o vídeo do card e mostra os botões de volta
+  const handleCloseInline = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPlayingCard(null);
+  };
 
   const handleTogglePlay = (e: React.MouseEvent, projectId: string) => {
     e.stopPropagation();
@@ -33,7 +51,6 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
     setTimeout(() => setFeedbackIcon(null), 1000);
   };
 
-  // Função simplificada que chama diretamente a prop
   const handleWantThis = (e: React.MouseEvent, category: string) => {
     e.stopPropagation();
     onSelectProject(category);
@@ -52,21 +69,22 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
         {content.items.map((project) => (
           <div 
             key={project.id}
-            className="group relative h-[450px] perspective-1000 cursor-pointer md:cursor-default"
+            className="group relative h-[450px] perspective-1000 md:cursor-default"
+            // Mobile: Abre modal ao clicar no card (mantido comportamento mobile)
             onClick={() => {
                 if (window.innerWidth < 768 && project.videoUrl) {
-                    setActiveVideo(project.videoUrl);
+                    setActiveVideoModal(project.videoUrl);
                 }
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
-            <div className="relative h-full w-full bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl overflow-hidden transition-all duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_0_30px_rgba(0,243,255,0.15)] flex flex-col">
+            <div className="relative h-full w-full bg-slate-900/80 backdrop-blur-md border border-slate-700 rounded-2xl overflow-hidden flex flex-col transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_30px_rgba(0,243,255,0.15)]">
               
-              {/* VIDEO OVERLAY */}
-              {project.videoUrl && (
+              {/* === CAMADA DE VÍDEO (SÓ APARECE SE CLICAR NO PLAY) === */}
+              {project.videoUrl && playingCard === project.id && (
                   <div 
-                    className="hidden md:block absolute inset-0 z-20 bg-black opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    className="absolute inset-0 z-40 bg-black animate-in fade-in duration-300"
                     onClick={(e) => handleTogglePlay(e, project.id)}
                   >
                      <video 
@@ -79,16 +97,29 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
                         playsInline
                      />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+                     
+                     {/* Botão FECHAR (X) - Topo Direito */}
+                     <button
+                        onClick={handleCloseInline}
+                        className="absolute top-4 right-4 p-2 bg-red-600/80 hover:bg-red-500 backdrop-blur-md border border-white/20 rounded-full text-white transition-all hover:scale-110 z-50 shadow-lg"
+                        title="Fechar Vídeo"
+                     >
+                        <X size={20} />
+                     </button>
+
+                     {/* Botão EXPANDIR - Topo Esquerdo */}
                      <button
                         onClick={(e) => {
                             e.stopPropagation();
-                            setActiveVideo(project.videoUrl!);
+                            setActiveVideoModal(project.videoUrl!);
                         }}
-                        className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-neon-blue hover:text-black transition-all hover:scale-110 z-30"
+                        className="absolute top-4 left-4 p-2 bg-black/50 backdrop-blur-md border border-white/20 rounded-full text-white hover:bg-neon-blue hover:text-black transition-all hover:scale-110 z-50"
                         title="Expandir Vídeo"
                      >
                         <Maximize2 size={20} />
                      </button>
+
+                     {/* Feedback de Pause/Play */}
                      {feedbackIcon?.id === project.id && (
                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none animate-in fade-in zoom-in duration-300">
                            <div className="bg-black/60 p-4 rounded-full backdrop-blur-sm border border-white/20">
@@ -96,13 +127,14 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
                            </div>
                         </div>
                      )}
+                     
                      <div className="absolute bottom-4 left-0 w-full text-center text-xs text-white/50 pointer-events-none">
                         Clique para pausar
                      </div>
                   </div>
               )}
 
-              {/* IMAGE */}
+              {/* === CONTEÚDO PADRÃO DO CARD === */}
               <div className="h-48 overflow-hidden relative z-10">
                 <div className="absolute inset-0 bg-slate-900/20 z-10 group-hover:bg-transparent transition-colors duration-300" />
                 <img 
@@ -110,17 +142,22 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
                   alt={project.title}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                 />
+                
+                {/* Ícone de Play (Gatilho para abrir o vídeo) */}
                 {(!project.link || project.videoUrl) && (
-                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
-                      <div className="bg-black/50 p-3 rounded-full backdrop-blur-sm border border-white/20">
-                        <PlayCircle size={32} className="text-white" />
+                   <div 
+                        className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 cursor-pointer"
+                        onClick={(e) => project.videoUrl ? handlePlayInline(e, project.id) : null}
+                    >
+                      <div className="bg-black/60 p-4 rounded-full backdrop-blur-sm border border-white/20 hover:bg-neon-blue hover:text-black hover:scale-110 transition-all text-white">
+                        <PlayCircle size={40} />
                       </div>
                    </div>
                 )}
               </div>
 
-              {/* DETAILS */}
-              <div className="p-6 flex-1 flex flex-col z-10">
+              {/* Detalhes e Botões */}
+              <div className="p-6 flex-1 flex flex-col z-10 bg-slate-900">
                 <h3 className="text-2xl font-bold text-white mb-2 font-mono group-hover:text-neon-blue transition-colors">
                   {project.title}
                 </h3>
@@ -149,7 +186,12 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
                                 {content.ctaView} <ExternalLink size={14} />
                             </a>
                         ) : (
-                            <button className="flex-1 flex items-center justify-center gap-2 py-2 bg-slate-800 text-slate-300 font-bold text-sm cursor-not-allowed border border-slate-700" disabled>
+                            // Botão Preview Video (se não tiver link externo)
+                            <button 
+                                onClick={(e) => project.videoUrl ? handlePlayInline(e, project.id) : null}
+                                className={`flex-1 flex items-center justify-center gap-2 py-2 font-bold text-sm border rounded transition-all ${project.videoUrl ? 'bg-slate-800 text-white border-slate-600 hover:bg-slate-700 cursor-pointer' : 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed'}`}
+                                disabled={!project.videoUrl}
+                            >
                                 {project.videoUrl ? 'Preview' : 'Em Breve'} <PlayCircle size={14} />
                             </button>
                         )}
@@ -162,6 +204,7 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
                         </button>
                     </div>
 
+                    {/* BOTÃO PRINCIPAL DE CONVERSÃO - Agora sempre visível até que o vídeo seja ativado */}
                     <button 
                         onClick={(e) => handleWantThis(e, project.category)}
                         className="w-full flex items-center justify-center gap-2 py-2 bg-indigo-600/80 hover:bg-indigo-500 text-white font-bold text-sm rounded transition-all border border-indigo-500/50 hover:shadow-[0_0_15px_rgba(99,102,241,0.5)]"
@@ -175,18 +218,19 @@ const Projects: React.FC<ProjectsProps> = ({ language, onSelectProject }) => {
         ))}
       </div>
 
-      {activeVideo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4 animate-in fade-in duration-200" onClick={() => setActiveVideo(null)}>
+      {/* === MODAL DE TELA CHEIA (Para Mobile ou botão Expandir) === */}
+      {activeVideoModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 backdrop-blur-sm p-4 animate-in fade-in duration-200" onClick={() => setActiveVideoModal(null)}>
            <div className="relative w-full max-w-5xl bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10" onClick={e => e.stopPropagation()}>
               <button 
-                onClick={() => setActiveVideo(null)}
+                onClick={() => setActiveVideoModal(null)}
                 className="absolute top-4 right-4 z-20 bg-black/50 p-2 rounded-full text-white hover:bg-neon-blue hover:text-black transition-colors"
               >
                 <X size={24} />
               </button>
               <div className="aspect-video w-full">
                  <video 
-                    src={activeVideo} 
+                    src={activeVideoModal} 
                     className="w-full h-full" 
                     controls 
                     autoPlay

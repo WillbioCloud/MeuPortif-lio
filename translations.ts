@@ -151,7 +151,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Mobile solution for smart city management, connecting citizens to public services with real-time reporting.',
           tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
           imageUrl: './assets/cidade-preview.jpg',
-          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-monitor-close-up-1728-large.mp4',
+            videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-monitor-close-up-1728-large.mp4',
           category: 'app'
         },
         {
@@ -291,7 +291,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Solução mobile para gestão de cidades inteligentes, conectando cidadãos a serviços públicos com reportes em tempo real.',
           tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
           imageUrl: './assets/cidade-preview.jpg',
-          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-monitor-close-up-1728-large.mp4',
+          videoUrl: 'https://res.cloudinary.com/dxplpg36m/video/upload/v1768604952/ScreenRecording_07-28-2025_11-00-02_1_p0tdbr.mov',
           category: 'app'
         },
         {
