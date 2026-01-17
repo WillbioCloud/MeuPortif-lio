@@ -47,7 +47,10 @@ interface TranslationData {
     sectionTitle: string;
     sectionSubtitle: string;
     hudHi: string;
+    hudWave: string;
     gameOverTitle: string;
+    gameWonTitle: string;
+    gameWonMessage: string;
     gameOverScore: string;
     legendDodge: string;
     legendGet: string;
@@ -60,6 +63,20 @@ interface TranslationData {
     fullscreen: string;
     exitFullscreen: string;
     pressEsc: string;
+    bossWarning: string;
+    finalBossWarning: string; // Novo
+    chooseUpgrade: string;
+    buffs: {
+        multishot: string;
+        rapidfire: string;
+        damage: string;
+        electric: string;
+        ricochet: string;
+        health: string;
+        shield: string;
+        speed: string;
+        laser: string; // Novo
+    };
     entities: {
       chaser: string;
       energy: string;
@@ -205,7 +222,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       fullscreen: 'Fullscreen',
       exitFullscreen: 'Exit Fullscreen',
       pressEsc: 'Press ESC to exit fullscreen',
-      bossWarning: 'WARNING: MOTHERSHIP APPROACHING',
+      bossWarning: 'WARNING: MOTHERSHIP DETECTED',
+      finalBossWarning: 'DANGER: DOOMSDAY CLASS SHIP',
       chooseUpgrade: 'CHOOSE YOUR UPGRADE',
       buffs: {
           multishot: 'Multi Shot',
@@ -215,7 +233,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           ricochet: 'Ricochet Ammo',
           health: 'Max HP +1',
           shield: 'Energy Shield',
-          speed: 'Speed Up'
+          speed: 'Speed Up',
+          laser: 'LASER BEAM'
       },
       entities: {
         chaser: 'Enemies',
@@ -361,6 +380,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       exitFullscreen: 'Sair da Tela Cheia',
       pressEsc: 'Pressione ESC para sair da tela cheia',
       bossWarning: 'ALERTA: NAVE MÃE DETECTADA',
+      finalBossWarning: 'PERIGO: NAVE MÃE SUPREMA',
       chooseUpgrade: 'ESCOLHA SEU UPGRADE',
       buffs: {
           multishot: 'Tiro Múltiplo',
@@ -370,7 +390,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           ricochet: 'Munição Ricochete',
           health: 'Vida Máxima +1',
           shield: 'Escudo de Energia',
-          speed: 'Velocidade +'
+          speed: 'Velocidade +',
+          laser: 'RAIO LASER SUPREMO'
       },
       entities: {
         chaser: 'Inimigos',
