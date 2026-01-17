@@ -115,7 +115,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       p2: 'Currently specializing in the React ecosystem (Next.js), Node.js backends, and creative WebGL implementations.',
       statExp: '5+',
       statExpLabel: 'YEARS EXPERIENCE',
-      statProj: '50+',
+      statProj: '10+',
       statProjLabel: 'PROJECTS SHIPPED'
     },
     skills: {
@@ -255,7 +255,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       p2: 'Atualmente especializado no ecossistema React (Next.js), backends em Node.js e implementações criativas em WebGL.',
       statExp: '5+',
       statExpLabel: 'ANOS DE EXPERIÊNCIA',
-      statProj: '50+',
+      statProj: '10+',
       statProjLabel: 'PROJETOS ENTREGUES'
     },
     skills: {
