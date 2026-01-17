@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Github, Linkedin, Twitter, Mail, Send, MessageCircle, Calculator } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Twitter, Mail, Send, MessageCircle, Calculator, Info } from 'lucide-react';
 import CustomCursor from './components/CustomCursor';
 import NeonGame from './components/NeonGame';
 import Projects from './components/Projects';
@@ -8,17 +8,18 @@ import About from './components/About';
 import Reveal from './components/Reveal';
 import { SKILLS } from './constants';
 import { translations } from './translations';
-import { Language } from './types';
+import { Language, ProjectCategory } from './types';
+import { projectDetails } from './projectDetails';
 
 const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>('pt');
   const [isTouch, setIsTouch] = useState(false);
   
-  // Estado para o formulário e orçamento
   const [formData, setFormData] = useState({ name: '', type: '' });
   const [quote, setQuote] = useState<string | null>(null);
+  const [showInfo, setShowInfo] = useState(false);
 
   const t = translations[language];
 
@@ -31,24 +32,43 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleProjectSelection = (category: string) => {
+    setFormData(prev => ({ ...prev, type: category }));
+    setQuote(null);
+    setShowInfo(true);
+    
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    setTimeout(() => setShowInfo(false), 5000);
+  };
+
   const toggleLanguage = () => {
     setLanguage(prev => prev === 'en' ? 'pt' : 'en');
-    setQuote(null); // Limpa orçamento ao trocar lingua
+    setQuote(null);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (name === 'type') setQuote(null); // Limpa orçamento se mudar o tipo
+    if (name === 'type') {
+        setQuote(null);
+        setShowInfo(true);
+    }
+  };
+
+  const handleInfoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowInfo(!showInfo);
   };
 
   const calculateQuote = (e: React.MouseEvent) => {
     e.preventDefault();
-    
     if (!formData.type) return;
 
-    // Tabela de Preços (Exemplo)
-    // PT em Reais, EN em Dólares
     const prices: Record<string, { pt: string, en: string }> = {
         landing: { pt: 'R$ 1.500 - R$ 3.000', en: '$400 - $800' },
         institutional: { pt: 'R$ 3.000 - R$ 6.000', en: '$800 - $1.500' },
@@ -72,9 +92,7 @@ const App: React.FC = () => {
         return;
     }
 
-    const PHONE_NUMBER = '5564999232217'; // Substitua pelo seu
-    
-    // Pega o nome legível do tipo de projeto para a mensagem
+    const PHONE_NUMBER = '5564999999999'; 
     const projectTypeName = t.contact.projectTypes[formData.type as keyof typeof t.contact.projectTypes];
 
     const message = language === 'pt' 
@@ -93,8 +111,12 @@ const App: React.FC = () => {
     { name: t.nav.contact, href: '#contact' },
   ];
 
+  const currentProjectDetail = formData.type 
+    ? projectDetails[formData.type as ProjectCategory]?.[language]
+    : null;
+
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-200 selection:bg-neon-purple selection:text-white overflow-hidden ${!isTouch ? 'cursor-none' : ''}`}>
+    <div className={`min-h-screen bg-slate-950 text-slate-200 selection:bg-neon-purple selection:text-white overflow-hidden ${!isTouch ? 'cursor-none' : ''}`} onClick={() => setShowInfo(false)}>
       <CustomCursor />
 
       {/* Background Ambience */}
@@ -181,7 +203,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Hero (com Spline Iframe) */}
+      {/* Hero */}
       <Hero language={language} />
 
       {/* About */}
@@ -217,7 +239,7 @@ const App: React.FC = () => {
 
       {/* Projects */}
       <Reveal>
-        <Projects language={language} />
+        <Projects language={language} onSelectProject={handleProjectSelection} />
       </Reveal>
 
       {/* Services */}
@@ -267,7 +289,11 @@ const App: React.FC = () => {
             </Reveal>
             
             <Reveal delay={200}>
-              <form className="max-w-md mx-auto space-y-4 text-left" onSubmit={handleWhatsAppClick}>
+              <form 
+                className="max-w-md mx-auto space-y-4 text-left" 
+                onSubmit={handleWhatsAppClick}
+                onClick={(e) => e.stopPropagation()} 
+              >
                  <div>
                     <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.nameLabel}</label>
                     <input 
@@ -279,8 +305,59 @@ const App: React.FC = () => {
                         placeholder={t.contact.namePlaceholder} 
                     />
                  </div>
-                 <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-1">{t.contact.typeLabel}</label>
+                 
+                 {/* Grupo Tipo de Projeto */}
+                 <div className="relative">
+                    <div className="flex items-center gap-2 mb-1">
+                        <label className="block text-sm font-medium text-slate-400">{t.contact.typeLabel}</label>
+                        
+                        {/* Ícone de Informação */}
+                        <div 
+                            className="relative flex items-center"
+                            onMouseEnter={() => setShowInfo(true)}
+                            onMouseLeave={() => setShowInfo(false)}
+                            onClick={handleInfoClick}
+                        >
+                            <Info size={16} className={`cursor-help transition-colors ${showInfo ? 'text-neon-blue' : 'text-slate-500 hover:text-slate-300'}`} />
+                            
+                            {/* BALÃO DE INFORMAÇÃO (TOOLTIP) */}
+                            {showInfo && (
+                                <div className={`
+                                    absolute z-50 bg-slate-800 border border-slate-600 rounded-xl p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-200 w-64 md:w-80
+                                    
+                                    /* Posicionamento Mobile (Em Cima) */
+                                    bottom-full left-0 mb-3
+
+                                    /* Posicionamento Desktop (Lateral Direita) */
+                                    md:bottom-auto md:left-full md:top-1/2 md:-translate-y-1/2 md:ml-4 md:mb-0
+                                `}>
+                                    {currentProjectDetail ? (
+                                        <>
+                                            <h4 className="font-bold text-white mb-2 text-lg">{currentProjectDetail.title}</h4>
+                                            <p className="text-sm text-slate-300 mb-3 leading-relaxed">{currentProjectDetail.description}</p>
+                                            <ul className="space-y-1">
+                                                {currentProjectDetail.features.map((feature, idx) => (
+                                                    <li key={idx} className="text-xs text-slate-400 flex items-center gap-1">
+                                                        <span className="w-1 h-1 bg-neon-green rounded-full" /> {feature}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </>
+                                    ) : (
+                                        <p className="text-sm text-slate-400 italic text-center py-2">
+                                            {language === 'pt' ? 'Selecione um tipo de projeto para ver detalhes.' : 'Select a project type to view details.'}
+                                        </p>
+                                    )}
+
+                                    {/* Seta Mobile (Baixo-Esquerda) */}
+                                    <div className="md:hidden absolute left-2 -bottom-2 w-4 h-4 bg-slate-800 border-b border-r border-slate-600 transform rotate-45"></div>
+
+                                    {/* Seta Desktop (Esquerda-Centro) */}
+                                    <div className="hidden md:block absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-slate-800 border-l border-b border-slate-600 transform rotate-45"></div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     
                     <div className="flex gap-2">
                         <div className="relative flex-grow">
@@ -298,13 +375,11 @@ const App: React.FC = () => {
                                 <option value="system">{t.contact.projectTypes.system}</option>
                                 <option value="other">{t.contact.projectTypes.other}</option>
                             </select>
-                            {/* Seta customizada do select */}
                             <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-slate-400">
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                             </div>
                         </div>
 
-                        {/* Botão de Orçamento */}
                         <button 
                             type="button"
                             onClick={calculateQuote}
@@ -315,7 +390,6 @@ const App: React.FC = () => {
                         </button>
                     </div>
 
-                    {/* Exibição do Orçamento */}
                     <div className={`mt-3 overflow-hidden transition-all duration-500 ease-out ${quote ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
                         <div className="bg-neon-purple/10 border border-neon-purple/30 rounded-lg p-3 text-center">
                             <span className="text-sm text-neon-purple font-mono">
@@ -324,7 +398,6 @@ const App: React.FC = () => {
                             </span>
                         </div>
                     </div>
-
                  </div>
                  
                  <button className="w-full bg-green-600 text-white font-bold py-4 rounded-lg hover:bg-green-500 transition-colors flex items-center justify-center gap-2 mt-4 shadow-lg hover:shadow-green-500/20">

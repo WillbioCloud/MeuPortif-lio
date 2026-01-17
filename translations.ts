@@ -36,6 +36,7 @@ interface TranslationData {
   projects: {
     title: string;
     ctaView: string;
+    ctaQuote: string; // Texto do botão
     items: Project[];
   };
   services: {
@@ -124,6 +125,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     projects: {
       title: 'Selected Works',
       ctaView: 'Live Demo',
+      ctaQuote: 'I want this',
       items: [
         {
           id: '1',
@@ -131,7 +133,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Immersive digital platform for a theme park with interactive maps, 3D elements and real-time ticketing system.',
           tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
-          link: 'https://sitesetland.vercel.app/'
+          link: 'https://sitesetland.vercel.app/',
+          category: 'institutional'
         },
         {
           id: '2',
@@ -139,15 +142,17 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'High-conversion landing page with modern responsive design, optimized for SEO and maximum performance.',
           tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768597084/Captura_de_tela_2026-01-16_175711_gofacg.png',
-          link: 'https://cidadeinteligentelanding.vercel.app/'
+          link: 'https://cidadeinteligentelanding.vercel.app/',
+          category: 'landing'
         },
         {
           id: '3',
           title: 'Smart City App',
           description: 'Mobile solution for smart city management, connecting citizens to public services with real-time reporting.',
           tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
-          imageUrl: './assets/cidade-preview.jpg', // Mantive sua imagem local
-          videoUrl: 'https://res.cloudinary.com/dxplpg36m/video/upload/v1768604952/ScreenRecording_07-28-2025_11-00-02_1_p0tdbr.mov' // Vídeo Exemplo
+          imageUrl: './assets/cidade-preview.jpg',
+          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-monitor-close-up-1728-large.mp4',
+          category: 'app'
         },
         {
           id: '4',
@@ -155,7 +160,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'A magical Harry Potter-themed experience featuring parallax scrolling, 3D interactive elements (Golden Snitch), and a custom map.',
           tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
-          link: 'https://ollivandercafe.vercel.app/'
+          link: 'https://ollivandercafe.vercel.app/',
+          category: 'institutional'
         }
       ]
     },
@@ -259,6 +265,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
     projects: {
       title: 'Trabalhos Selecionados',
       ctaView: 'Ver Online',
+      ctaQuote: 'Quero um desse',
       items: [
         {
           id: '1',
@@ -266,7 +273,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos, elementos 3D e sistema de tickets.',
           tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
-          link: 'https://sitesetland.vercel.app/'
+          link: 'https://sitesetland.vercel.app/',
+          category: 'institutional'
         },
         {
           id: '2',
@@ -274,7 +282,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Landing page de alta conversão com design responsivo moderno, otimizada para SEO e performance máxima.',
           tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768597084/Captura_de_tela_2026-01-16_175711_gofacg.png',
-          link: 'https://cidadeinteligentelanding.vercel.app/'
+          link: 'https://cidadeinteligentelanding.vercel.app/',
+          category: 'landing'
         },
         {
           id: '3',
@@ -282,7 +291,8 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Solução mobile para gestão de cidades inteligentes, conectando cidadãos a serviços públicos com reportes em tempo real.',
           tags: ['React Native', 'Expo', 'Maps API', 'Supabase'],
           imageUrl: './assets/cidade-preview.jpg',
-          videoUrl: 'https://res.cloudinary.com/dxplpg36m/video/upload/v1768604952/ScreenRecording_07-28-2025_11-00-02_1_p0tdbr.mov' // Vídeo Exemplo
+          videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-software-developer-working-on-code-monitor-close-up-1728-large.mp4',
+          category: 'app'
         },
         {
           id: '4',
@@ -290,12 +300,13 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           description: 'Uma experiência mágica com temática de Harry Potter, apresentando rolagem parallax, elementos 3D interativos (Pomo de Ouro) e mapa personalizado.',
           tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
-          link: 'https://ollivandercafe.vercel.app/'
+          link: 'https://ollivandercafe.vercel.app/',
+          category: 'institutional'
         }
       ]
     },
     services: {
-      title: 'Services',
+      title: 'Serviços',
       items: [
         {
           title: 'Engenharia Frontend',

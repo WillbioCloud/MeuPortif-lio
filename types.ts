@@ -2,6 +2,9 @@ import { LucideIcon } from "lucide-react";
 
 export type Language = 'en' | 'pt';
 
+// Categorias que correspondem exatamente ao select do formulário
+export type ProjectCategory = 'landing' | 'institutional' | 'ecommerce' | 'app' | 'system' | 'other';
+
 export interface Project {
   id: string;
   title: string;
@@ -9,7 +12,8 @@ export interface Project {
   tags: string[];
   imageUrl: string;
   link?: string;
-  videoUrl?: string; // Adicionado para suportar o vídeo
+  videoUrl?: string;
+  category: ProjectCategory; // Campo essencial para o botão funcionar
 }
 
 export interface Skill {
