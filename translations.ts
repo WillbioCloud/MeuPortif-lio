@@ -146,7 +146,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       items: [
         {
           id: '1',
-          title: 'Setland Theme Park',
+          title: 'Setland Park Temático',
           description: 'Immersive digital platform for a theme park with interactive maps, 3D elements and real-time ticketing system.',
           tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
@@ -178,6 +178,15 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/',
+          category: 'institutional'
+        },
+        {
+          id: '5',
+          title: 'Mestre das Pizzas',
+          description: 'Complete e-commerce for an artisanal pizzeria, with pizza customization system, shopping cart, and WhatsApp sales integration.',
+          tags: ['HTML', 'CSS', 'Framer Motion', 'JavaScript'],
+          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1769236665/Captura_de_tela_2026-01-24_033058_s7jrid.png',
+          link: 'https://mestredaspizzas.vercel.app/',
           category: 'institutional'
         }
       ]
@@ -303,9 +312,9 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
       items: [
         {
           id: '1',
-          title: 'Setland Theme Park',
+          title: 'Setland Parque Temático',
           description: 'Plataforma digital imersiva para um parque temático, com integração de mapas interativos, elementos 3D e sistema de tickets.',
-          tags: ['React', 'Spline 3D', 'Supabase', 'Tailwind'],
+          tags: ['HTML', 'Spline 3D', 'Supabase', 'CSS'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596880/castelo_pdatlo.png',
           link: 'https://sitesetland.vercel.app/',
           category: 'institutional'
@@ -314,7 +323,7 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           id: '2',
           title: 'Landing Page Cidade Inteligente',
           description: 'Landing page de alta conversão com design responsivo moderno, otimizada para SEO e performance máxima.',
-          tags: ['React', 'Tailwind', 'Framer Motion', 'SEO'],
+          tags: ['HTML', 'CSS', 'Framer Motion', 'SEO'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768597084/Captura_de_tela_2026-01-16_175711_gofacg.png',
           link: 'https://cidadeinteligentelanding.vercel.app/',
           category: 'landing'
@@ -335,6 +344,15 @@ export const translations: Record<'en' | 'pt', TranslationData> = {
           tags: ['React', 'Spline 3D', 'Tailwind', 'Framer Motion'],
           imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1768596776/Captura_de_tela_2026-01-16_175244_axmojq.png',
           link: 'https://ollivandercafe.vercel.app/',
+          category: 'institutional'
+        },
+        {
+          id: '5',
+          title: 'Mestre das Pizzas',
+          description: 'E-commerce completo para uma pizzaria artesanal, com sistema de personalização de pizzas, carrinho de compras e venda no whatsapp.',
+          tags: ['HTML', 'CSS', 'Framer Motion', 'JavaScript'],
+          imageUrl: 'https://res.cloudinary.com/dxplpg36m/image/upload/v1769236665/Captura_de_tela_2026-01-24_033058_s7jrid.png',
+          link: 'https://mestredaspizzas.vercel.app/',
           category: 'institutional'
         }
       ]
